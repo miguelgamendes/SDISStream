@@ -55,7 +55,7 @@ public class Receiver extends Thread
                 System.exit(11);
             }
             
-            shared.qeueReceiver.add(packet.getData());
+            shared.queueReceiver.add(packet.getData());
         }
     }
 }
