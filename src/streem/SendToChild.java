@@ -58,7 +58,7 @@ public class SendToChild extends Thread
         {
             if (shared.queueReceiver.size() > 0)
             {
-                packet = new DatagramPacket(shared.qeueReceiver.peek(), shared.qeueReceiver.peek().length, address, port);
+                packet = new DatagramPacket(shared.queueReceiver.peek(), shared.queueReceiver.peek().length, address, port);
                 try {
                     socket.send(packet);
                 } catch (IOException ex) {
