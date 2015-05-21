@@ -56,16 +56,16 @@ public class SendToPlayer extends Thread
         
         while (true)
         {
-            if (shared.qeueReceiver.size() > 0)
+            if (shared.queueReceiver.size() > 0)
             {
-                packet = new DatagramPacket(shared.qeueReceiver.peek(), shared.qeueReceiver.peek().length, address, port);
+                packet = new DatagramPacket(shared.queueReceiver.peek(), shared.queueReceiver.peek().length, address, port);
                 try {
                     socket.send(packet);
                 } catch (IOException ex) {
                     System.out.println("FAILLED TO SEND TO SOCKET");
                     System.exit(21);
                 }
-                shared.qeueReceiver.remove();
+                shared.queueReceiver.remove();
             }
         }
     }
