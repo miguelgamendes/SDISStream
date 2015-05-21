@@ -11,7 +11,7 @@ public class Shared
 {
     private static Shared instance = null;
     
-    protected ConcurrentLinkedQueue<byte[]> qeueReceiver = new ConcurrentLinkedQueue<byte[]>();
+    protected ConcurrentLinkedQueue<byte[]> queueReceiver = new ConcurrentLinkedQueue<byte[]>();
     
     private Shared()
     {
