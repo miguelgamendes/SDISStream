@@ -56,7 +56,7 @@ public class SendToChild extends Thread
         
         while (true)
         {
-            if (shared.qeueReceiver.size() > 0)
+            if (shared.queueReceiver.size() > 0)
             {
                 packet = new DatagramPacket(shared.qeueReceiver.peek(), shared.qeueReceiver.peek().length, address, port);
                 try {
@@ -65,7 +65,7 @@ public class SendToChild extends Thread
                     System.out.println("FAILLED TO SEND TO SOCKET");
                     System.exit(21);
                 }
-                shared.qeueReceiver.remove();
+                shared.queueReceiver.remove();
             }
         }
     }
