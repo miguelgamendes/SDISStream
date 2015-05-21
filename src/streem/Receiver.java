@@ -38,7 +38,7 @@ public class Receiver extends Thread
         try {
             socket = new DatagramSocket(port);
         } catch (SocketException ex) {
-            System.out.println("FAILLED TO CREATE SOCKET");
+            System.out.println("FAILED TO CREATE SOCKET");
             System.exit(10);
         }
         
@@ -51,7 +51,7 @@ public class Receiver extends Thread
             try {
                 socket.receive(packet);
             } catch (IOException ex) {
-                System.out.println("FAILLED TO RECEIVE FROM SOCKET");
+                System.out.println("FAILED TO RECEIVE FROM SOCKET");
                 System.exit(11);
             }
             

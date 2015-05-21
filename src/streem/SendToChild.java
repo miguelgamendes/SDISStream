@@ -48,7 +48,7 @@ public class SendToChild extends Thread
         try {
             socket = new DatagramSocket();
         } catch (SocketException ex) {
-            System.out.println("FAILLED TO CREATE SOCKET");
+            System.out.println("FAILED TO CREATE SOCKET");
             System.exit(10);
         }
         
@@ -62,7 +62,7 @@ public class SendToChild extends Thread
                 try {
                     socket.send(packet);
                 } catch (IOException ex) {
-                    System.out.println("FAILLED TO SEND TO SOCKET");
+                    System.out.println("FAILED TO SEND TO SOCKET");
                     System.exit(21);
                 }
                 shared.queueReceiver.remove();

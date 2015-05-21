@@ -55,7 +55,7 @@ public class STREEm {
                 
                 break;
             default:
-                System.out.println("WORNG TYPE");
+                System.out.println("WRONG TYPE");
                 System.exit(2);
         }
         
