@@ -1,5 +1,6 @@
 package BinaryStreamTree;
 
+import java.io.IOException;
 import java.net.DatagramPacket;
 
 /**
@@ -7,7 +8,8 @@ import java.net.DatagramPacket;
  */
 public class BinaryStreamTreeServer extends BinaryStreamTreeNode {
 
-    public BinaryStreamTreeServer(){
+    public BinaryStreamTreeServer() throws IOException {
+        super();
 
     }
 

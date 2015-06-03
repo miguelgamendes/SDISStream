@@ -14,4 +14,6 @@ public class HttpURLSecureConnection extends HttpURLConnection {
     protected HttpURLSecureConnection(URL url, Handler handler) throws IOException {
         super(url, handler);
     }
+
+    //TODO HERE. implement secure http connection.
 }

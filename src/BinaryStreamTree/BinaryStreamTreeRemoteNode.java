@@ -11,18 +11,21 @@ import java.net.DatagramPacket;
 /**
  * Created by danfergo on 27-05-2015.
  */
-public class BinaryStreamTreeRemoteNode implements HttpHandler {
+public class BinaryStreamTreeRemoteNode {
 
     BinaryStreamTreeRemoteNode() {
-    }
-
-    @Override
-    public void handle(HttpExchange httpExchange) throws IOException {
-
     }
 
     public void send(byte[] data) {
 
     }
+
+
+
+    /*** NOTIFICATIONS **/
+    public void disconnect(){
+
+    }
+
 
 }
