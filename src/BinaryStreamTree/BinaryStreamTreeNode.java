@@ -20,11 +20,17 @@ public abstract class BinaryStreamTreeNode extends HttpSecureServer{
         //TODO implement treatment of client's requests. Switch case sort of stuff.
     }
 
-    public void disconnect(){
+    protected void send(byte [] data) {
+        if(youngerSon != null){
+            youngerSon.send(data);
+        }
 
+        if(olderSon != null){
+            olderSon.send(data);
+        }
     }
 
-    void connectRequest(){
+    public void disconnect(){
 
     }
 

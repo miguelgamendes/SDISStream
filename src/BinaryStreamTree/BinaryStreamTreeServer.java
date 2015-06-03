@@ -14,17 +14,7 @@ public class BinaryStreamTreeServer extends BinaryStreamTreeNode {
     }
 
     public void send(byte [] data) {
-        if(youngerSon != null){
-            youngerSon.send(data);
-        }
-
-        if(olderSon != null){
-            olderSon.send(data);
-        }
+        send(data);
     }
 
-    @Override
-    public void disconnect() {
-
-    }
 }
