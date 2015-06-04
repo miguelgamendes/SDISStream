@@ -6,6 +6,7 @@ import com.sun.net.httpserver.HttpExchange;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -74,12 +75,20 @@ public abstract class BinaryStreamTreeNode extends HttpSecureServer{
     }
 
     protected void send(byte [] data) {
-        if(youngerSon != null) youngerSon.send(data);
-        if(olderSon != null) olderSon.send(data);
+        try { //TODO improve handlers.
+            if(youngerSon != null) youngerSon.send(data);
+        }catch (IOException e){
+            youngerSon = null;
+        }
+
+        try {
+            if(olderSon != null) olderSon.send(data);
+        }catch (IOException e){
+            olderSon = null;
+        }
     }
 
-    public void disconnect(){
 
-    }
+
 
 }

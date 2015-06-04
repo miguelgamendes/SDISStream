@@ -33,12 +33,8 @@ public class BinaryStreamTreeRemoteLowerNode  extends BinaryStreamTreeRemoteNode
 
 
 
-    public void send(byte[] data) {
-        try {
+    public void send(byte[] data) throws IOException {
             outputStream.write(data);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         //TODO if exists a socket , send data to socket, else discard it.
     }
 }

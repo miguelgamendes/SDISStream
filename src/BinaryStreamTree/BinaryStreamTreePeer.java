@@ -31,8 +31,11 @@ public class BinaryStreamTreePeer extends BinaryStreamTreeNode {
      * Requests video chunks from BinaryStreamTreeRemoteNode
      * parent' socket resend it to it's children and return the upper layer.
      */
-    public byte [] receive() throws IOException {
-        byte [] data = parent.receive();
+    public byte [] receive(int bytes) throws IOException {
+        byte [] data = parent.receive(20);
+        if(data ==null){
+            System.out.println("asdasd");
+        }
         send(data);
         return data;
     }

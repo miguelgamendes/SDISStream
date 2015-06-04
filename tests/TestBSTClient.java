@@ -13,7 +13,7 @@ public class TestBSTClient {
         BinaryStreamTreePeer client = new BinaryStreamTreePeer(15003,"localhost:15001");
 
         while(true){
-            System.out.println(new String(client.receive()));
+            System.out.println(client.receive(1)[0]);
         }
 
     }

@@ -2,10 +2,7 @@ package BinaryStreamTree;
 
 import HttpSecure.HttpURLSecureConnection;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.*;
 
 /**
@@ -14,7 +11,7 @@ import java.net.*;
 public class BinaryStreamTreeRemoteUpperNode extends BinaryStreamTreeRemoteNode{
 
     ServerSocket socket;
-    BufferedReader feed;
+    DataInputStream feed;
     int httpPort;
 
 
@@ -25,7 +22,7 @@ public class BinaryStreamTreeRemoteUpperNode extends BinaryStreamTreeRemoteNode{
         socket = new ServerSocket(0);
         connect(address, socket.getLocalPort());
         Socket conn = socket.accept();
-        feed = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+        feed = new DataInputStream(conn.getInputStream());
     }
 
     public void connect(String address, int myDataSocketPort) throws IOException {
@@ -50,10 +47,11 @@ public class BinaryStreamTreeRemoteUpperNode extends BinaryStreamTreeRemoteNode{
     }
 
 
-    public byte[] receive() {
-
+    public byte[] receive(int bytes) {
+        byte buf[]  = new byte[bytes];
         try {
-            return feed.readLine().getBytes();
+            feed.read(buf);
+            return buf;
         } catch (IOException e) {
             e.printStackTrace();
         }

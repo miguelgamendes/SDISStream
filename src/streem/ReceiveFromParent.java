@@ -35,14 +35,14 @@ public class ReceiveFromParent extends Thread
         
         while (true)
         {
-            try {
-                byte[] temp1 = receiver.receive();
-                byte[] temp = new byte[util.getLenght(temp1) + 1];
-                util.arrayCopy1(temp1, temp);
-                shared.add(temp);
+           /** try {
+                //byte[] temp1 = receiver.receive();
+                //byte[] temp = new byte[util.getLenght(temp1) + 1];
+                //util.arrayCopy1(temp1, temp);
+                //shared.add(temp);
             } catch (IOException ex) {
                 System.out.println("Failed to receive");
-            }
+            }**/
         }
     }
 }
