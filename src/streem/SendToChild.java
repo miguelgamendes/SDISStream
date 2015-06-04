@@ -22,9 +22,6 @@ public class SendToChild extends Thread
     private int port;
     private InetAddress address;
     
-    DatagramPacket packet;
-    DatagramSocket socket;
-
     BinaryStreamTreeServer server;
     
     byte[] buffer;
@@ -37,16 +34,7 @@ public class SendToChild extends Thread
         try {
             server = new BinaryStreamTreeServer(15001);
         } catch (IOException ex) {
-            ex.printStackTrace();
             System.out.println("Failed to create binarystreamtreeserver");
-        }
-        
-        try
-        {
-            address = getByName("192.168.109.218");
-        } catch (Exception ex) {
-            System.out.println("Host name failed");
-            System.exit(20);
         }
         
     }
@@ -54,12 +42,6 @@ public class SendToChild extends Thread
     @Override
     public void run()
     {
-        try {
-            socket = new DatagramSocket();
-        } catch (SocketException ex) {
-            System.out.println("FAILED TO CREATE SOCKET");
-            System.exit(10);
-        }
         
         Shared shared = Shared.getInstance();
         
@@ -71,16 +53,7 @@ public class SendToChild extends Thread
             {
                 size = util.arrayCopy2(shared.remove(), buffer);
                 server.send(buffer);
-                
-                
-                //Deprecated
-                /*packet = new DatagramPacket(buffer, size, address, port);
-                try {
-                    socket.send(packet);
-                } catch (IOException ex) {
-                    System.out.println("FAILED TO SEND TO SOCKET");
-                    System.exit(21);
-                }*/
+
             }
         }
     }

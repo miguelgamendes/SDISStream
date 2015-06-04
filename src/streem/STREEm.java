@@ -41,8 +41,8 @@ public class STREEm {
             case SERVER:
                 ReceiveFromPlayer receiveFromPlayer = new ReceiveFromPlayer(Integer.parseInt(args[1]));
                 receiveFromPlayer.start();
-                SendToChild sendeToChild = new SendToChild(Integer.parseInt(args[2]));
-                sendeToChild.start();
+                SendToChild sendToChild = new SendToChild(Integer.parseInt(args[2]));
+                sendToChild.start();
                 
                 break;
             case CLIENT:
