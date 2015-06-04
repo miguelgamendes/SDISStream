@@ -1,6 +1,7 @@
 package BinaryStreamTree;
 
 import HttpSecure.HttpURLSecureConnection;
+import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 
 import javax.sql.rowset.serial.SerialRef;
@@ -11,6 +12,8 @@ import java.net.InetAddress;
 import java.net.URL;
 import java.net.ServerSocket;
 import java.net.UnknownHostException;
+import java.rmi.server.ExportException;
+import java.util.Map;
 
 /**
  * Created by danfergo on 27-05-2015.
@@ -24,19 +27,59 @@ public class BinaryStreamTreePeer extends BinaryStreamTreeNode {
     public BinaryStreamTreePeer(int BS3PPort, String BS3PParentAddress) throws IOException {
         super(BS3PPort);
         parent = new BinaryStreamTreeRemoteUpperNode(BS3PParentAddress, BS3PPort);
+        godfather = parent.connect(BS3PParentAddress, parent.getSocketPort());
+        System.out.println("Merda da porta 1"+BS3PParentAddress);
+        if(godfather != null) System.out.println("My godfather is "+godfather.getAddress()+":"+godfather.getPort());
+        parent.accept();
+
     }
 
+    @Override
+    public void secureHandle(HttpExchange httpExchange) throws IOException {
+        Headers headers = httpExchange.getResponseHeaders();
+
+        if(olderSon == null){
+            httpExchange.getResponseHeaders().add("Godfather", parent.getAddress() + ":" + parent.getPort());
+        } else if(youngerSon == null){
+            httpExchange.getResponseHeaders().add("Godfather", olderSon.getAddress() + ":" + olderSon.getPort());
+        }
+
+        super.secureHandle(httpExchange);
+
+    }
+
+    public void handleDisconnection(){
+        parent = godfather;
+        try {
+            System.out.println("Connecting to godfather");
+            System.out.println("merda da porta 2 "+parent.getPort());
+            godfather = parent.connect(parent.getAddress()+":"+parent.getPort(), parent.getSocketPort());
+            parent.accept();
+            System.out.println("Connected to godfather");
+        } catch (IOException e) {
+            System.out.println("Not connected");
+            e.printStackTrace();
+        }
+    }
 
     /**
      * Requests video chunks from BinaryStreamTreeRemoteNode
      * parent' socket resend it to it's children and return the upper layer.
      */
-    public byte [] receive(int bytes) throws IOException {
-        byte [] data = parent.receive(bytes);
-        if(data ==null){
-            System.out.println("asdasd");
+    public byte [] receive(int bytes) {
+        byte [] data = new byte[0];
+        try {
+            data = parent.receive(bytes);
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        send(data, data.length);
+        if(data !=null){
+            send(data, data.length);
+        } else {
+            handleDisconnection();
+            receive(bytes);
+        }
         return data;
     }
 

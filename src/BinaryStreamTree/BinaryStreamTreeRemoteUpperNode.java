@@ -14,58 +14,70 @@ public class BinaryStreamTreeRemoteUpperNode extends BinaryStreamTreeRemoteNode{
     DataInputStream feed;
     int httpPort;
 
+    public int getHttpPort(){
+        return httpPort;
+    }
 
     BinaryStreamTreeRemoteUpperNode(String address, int httpport) throws IOException {
+
         super(address, httpport);
         this.httpPort = httpport;
-        //HttpURLSecureConnection con = new HttpURLSecureConnection(new URL(address),port); //after this, there is a socket opened in a server peer
         socket = new ServerSocket(0);
-        connect(address, socket.getLocalPort());
-        Socket conn = socket.accept();
+    }
 
-       // System.out.println("merdas recebidas a serio 1 "+conn.getReceiveBufferSize());
-       // System.out.println("merdas recebidas a serio 2 "+conn.getSendBufferSize());
+    public int getSocketPort(){
+
+       return socket.getLocalPort();
+    }
+
+    public void accept() throws IOException {
+
+        Socket conn = socket.accept();
         feed = new DataInputStream(conn.getInputStream());
     }
 
-    public void connect(String address, int myDataSocketPort) throws IOException {
+    public BinaryStreamTreeRemoteUpperNode connect(String address, int myDataSocketPort) throws IOException {
         URL url;
-
-        boolean sucess = false;
-        while(!sucess){
+        BinaryStreamTreeRemoteUpperNode godfather = null;
+        try{
             url = new URL("http://"+address+"/?socket_port="+myDataSocketPort+"&http_port="+httpPort);
             java.net.HttpURLConnection con = (java.net.HttpURLConnection) url.openConnection();
 
-            int res = con.getResponseCode();
-            if(res == 200){
-                System.out.println("sucess address "+address);
-                sucess = true;
-            }
 
+            String gf = con.getHeaderField("Godfather");
+            if(gf != null){
+                String add = gf.split(":")[0];
+                int port = Integer.parseInt(gf.split(":")[1]);
+                godfather = new BinaryStreamTreeRemoteUpperNode(add,port);
+            } else {
+                System.out.println("godfather is null");
+            }
+            System.out.println("sucess address "+con.getURL());
+        } catch (Exception e){
+            e.printStackTrace();
         }
 
-
+        return godfather;
     }
 
 
-    public byte[] receive(int bytes) {
+    public byte[] receive(int bytes) throws IOException{
+
         byte buf[]  = new byte[bytes];
         int missingBytes = bytes, n;
-        try {
-            do {
-                n = feed.read(buf,bytes-missingBytes,missingBytes);
-                if(n == 0){
-                    byte reBuf[] = new byte[bytes - missingBytes];
-                    System.arraycopy(buf,0,reBuf,0,bytes - missingBytes);
-                }
-                missingBytes -=  n;
-            }while(missingBytes > 0);
 
-            return buf;
+        do {
+            n = feed.read(buf,bytes-missingBytes,missingBytes);
+            if(n == -1) return null;
+            if(n == 0){
+                byte reBuf[] = new byte[bytes - missingBytes];
+                System.arraycopy(buf,0,reBuf,0,bytes - missingBytes);
+            }
+            missingBytes -=  n;
+        }while(missingBytes > 0);
 
-         } catch (IOException e1) {
-            e1.printStackTrace();
-            return null;
-        }
+        return buf;
+
+
     }
 }
