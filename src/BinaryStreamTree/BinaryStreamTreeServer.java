@@ -12,8 +12,8 @@ public class BinaryStreamTreeServer extends BinaryStreamTreeNode {
         super(BS3PPort);
     }
 
-    public void send(byte [] data) {
-        super.send(data);
+    public void send(byte [] data, int n) {
+        super.send(data,n);
     }
 
 }

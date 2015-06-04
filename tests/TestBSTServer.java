@@ -20,7 +20,7 @@ public class TestBSTServer {
             //server.send("Tree Stream.\n".getBytes());
             byte xx[] = new byte[1];
             xx[0] = (byte)i;
-            server.send(xx);
+            //server.send(xx);
             System.out.println(xx[0]);
             Thread.sleep(100);
         }

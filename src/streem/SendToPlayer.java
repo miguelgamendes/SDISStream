@@ -27,7 +27,7 @@ public class SendToPlayer extends Thread
     public SendToPlayer(int port)
     {
         this.port = port;
-        buffer = new byte[1500];
+        //buffer = new byte[1500];
         
         try
         {
@@ -57,8 +57,10 @@ public class SendToPlayer extends Thread
         {
             if (!shared.empty())
             {
-                size = util.arrayCopy2(shared.remove(), buffer);
-                packet = new DatagramPacket(buffer, size, address, port);
+                buffer = shared.remove();
+                //size = util.arrayCopy2(shared.remove(), buffer);
+                System.err.println("last size + " + buffer.length);
+                packet = new DatagramPacket(buffer, buffer.length, address, port);
                 try {
                     socket.send(packet);
                 } catch (IOException ex) {

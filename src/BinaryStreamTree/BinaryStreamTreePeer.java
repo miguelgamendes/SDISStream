@@ -36,7 +36,7 @@ public class BinaryStreamTreePeer extends BinaryStreamTreeNode {
         if(data ==null){
             System.out.println("asdasd");
         }
-        send(data);
+        send(data, data.length);
         return data;
     }
 

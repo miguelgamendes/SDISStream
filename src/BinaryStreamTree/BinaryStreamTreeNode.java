@@ -73,15 +73,15 @@ public abstract class BinaryStreamTreeNode extends HttpSecureServer{
         }
     }
 
-    protected void send(byte [] data) {
+    protected void send(byte [] data, int n) {
         try { //TODO improve handlers.
-            if(youngerSon != null) youngerSon.send(data);
+            if(youngerSon != null) youngerSon.send(data, n);
         }catch (IOException e){
             youngerSon = null;
         }
 
         try {
-            if(olderSon != null) olderSon.send(data);
+            if(olderSon != null) olderSon.send(data, n);
         }catch (IOException e){
             olderSon = null;
         }

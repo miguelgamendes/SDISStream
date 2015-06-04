@@ -22,6 +22,9 @@ public class BinaryStreamTreeRemoteUpperNode extends BinaryStreamTreeRemoteNode{
         socket = new ServerSocket(0);
         connect(address, socket.getLocalPort());
         Socket conn = socket.accept();
+
+        System.out.println("merdas recebidas a serio 1 "+conn.getReceiveBufferSize());
+        System.out.println("merdas recebidas a serio 2 "+conn.getSendBufferSize());
         feed = new DataInputStream(conn.getInputStream());
     }
 
@@ -50,8 +53,12 @@ public class BinaryStreamTreeRemoteUpperNode extends BinaryStreamTreeRemoteNode{
     public byte[] receive(int bytes) {
         byte buf[]  = new byte[bytes];
         try {
-            feed.read(buf);
-            return buf;
+            System.out.println(bytes);
+            int n = feed.read(buf,0,bytes);
+            System.err.println(bytes + " " + n);
+            byte reBuf[] = new byte[n];
+            System.arraycopy(buf,0,reBuf,0,n);
+            return reBuf;
         } catch (IOException e) {
             e.printStackTrace();
         }

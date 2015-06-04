@@ -20,9 +20,9 @@ public class ReceiveFromParent extends Thread
     public ReceiveFromParent(int port)
     {
         this.port = port;
-        buffer = new byte[1500];
+        //buffer = new byte[1500];
         try {
-            receiver = new BinaryStreamTreePeer(15003, "172.30.49.127:15001");
+            receiver = new BinaryStreamTreePeer(15003, "localhost:15001");
         } catch (IOException ex) {
             System.out.println("Failed to create BinaryStreamTreePeer");
         }
@@ -36,9 +36,7 @@ public class ReceiveFromParent extends Thread
         while (true)
         {
            try {
-                byte[] temp1 = receiver.receive(1500);
-                byte[] temp = new byte[util.getLenght(temp1) + 1];
-                util.arrayCopy1(temp1, temp);
+                byte[] temp = receiver.receive(1501);
                 shared.add(temp);
             } catch (IOException ex) {
                 System.out.println("Failed to receive");

@@ -49,7 +49,8 @@ public class ReceiveFromPlayer extends Thread
                 System.out.println("FAILED TO RECEIVE FROM SOCKET");
                 System.exit(11);
             }
-            byte[] temp = new byte[util.getLenght(packet.getData()) + 1];
+
+            byte[] temp = new byte[packet.getLength() + 1];
             util.arrayCopy1(packet.getData(), temp);
             shared.add(temp);
         }
