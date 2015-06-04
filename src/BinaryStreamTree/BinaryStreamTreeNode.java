@@ -48,7 +48,6 @@ public abstract class BinaryStreamTreeNode extends HttpSecureServer{
         try {
             int socketPort = Integer.parseInt(queryToMap(httpExchange.getRequestURI().getQuery()).get("socket_port"));
             int httpPort = Integer.parseInt(queryToMap(httpExchange.getRequestURI().getQuery()).get("http_port"));
-
             if(olderSon == null){
                 olderSon = new BinaryStreamTreeRemoteLowerNode(httpExchange.getRemoteAddress().getHostName(),
                         httpPort,socketPort);
@@ -65,10 +64,10 @@ public abstract class BinaryStreamTreeNode extends HttpSecureServer{
                 System.out.println("LOcation url"+ url);
                 httpExchange.sendResponseHeaders(300, "Redirect".length());
             }
-            //httpExchange.sendResponseHeaders(200, response.length());
-            /*OutputStream os = httpExchange.getResponseBody();
-            os.write(response.getBytes());
-            os.close();*/
+           /** httpExchange.sendResponseHeaders(200, "stuff".length());
+            OutputStream os = httpExchange.getResponseBody();
+            os.write("stuff".getBytes());
+            os.close(); **/
         } catch (IOException e) {
             e.printStackTrace();
         }
