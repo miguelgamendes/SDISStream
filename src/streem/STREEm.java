@@ -33,33 +33,32 @@ public class STREEm {
                 break;
         }
         
-        Receiver receiver = new Receiver(Integer.parseInt(args[1]));
+        
         
         
         switch (TYPE)
         {
             case SERVER:
-                receiver.start();
+                ReceiveFromPlayer receiveFromPlayer = new ReceiveFromPlayer(Integer.parseInt(args[1]));
+                receiveFromPlayer.start();
                 SendToChild sendeToChild = new SendToChild(Integer.parseInt(args[2]));
                 sendeToChild.start();
                 
                 break;
             case CLIENT:
-                receiver.start();
+                ReceiveFromParent receiverFromParent = new ReceiveFromParent(Integer.parseInt(args[1]));
+                receiverFromParent.start();
                 
                 SendToPlayer senderPlayer = new SendToPlayer(Integer.parseInt(args[2]));
                 senderPlayer.start();
 
-                //SendToChild sender = new SendToChild(Integer.parseInt(args[2]));
-                //sender.start();
+                SendToChild sender = new SendToChild(Integer.parseInt(args[1]));
+                sender.start();
                 
                 break;
             default:
                 System.out.println("WRONG TYPE");
                 System.exit(2);
         }
-        
-        
     }
-    
 }
