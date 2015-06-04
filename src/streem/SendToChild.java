@@ -52,7 +52,6 @@ public class SendToChild extends Thread
             if (!shared.empty())
             {
                 size = util.arrayCopy2(shared.remove(), buffer);
-                System.out.println("real output size "+ size);
                 server.send(buffer,size);
 
             }

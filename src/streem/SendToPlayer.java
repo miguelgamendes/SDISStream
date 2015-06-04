@@ -59,7 +59,6 @@ public class SendToPlayer extends Thread
             {
                 buffer = shared.remove();
                 //size = util.arrayCopy2(shared.remove(), buffer);
-                System.err.println("last size + " + buffer.length);
                 packet = new DatagramPacket(buffer, buffer.length, address, port);
                 try {
                     socket.send(packet);

@@ -23,8 +23,8 @@ public class BinaryStreamTreeRemoteUpperNode extends BinaryStreamTreeRemoteNode{
         connect(address, socket.getLocalPort());
         Socket conn = socket.accept();
 
-        System.out.println("merdas recebidas a serio 1 "+conn.getReceiveBufferSize());
-        System.out.println("merdas recebidas a serio 2 "+conn.getSendBufferSize());
+       // System.out.println("merdas recebidas a serio 1 "+conn.getReceiveBufferSize());
+       // System.out.println("merdas recebidas a serio 2 "+conn.getSendBufferSize());
         feed = new DataInputStream(conn.getInputStream());
     }
 
@@ -52,16 +52,22 @@ public class BinaryStreamTreeRemoteUpperNode extends BinaryStreamTreeRemoteNode{
 
     public byte[] receive(int bytes) {
         byte buf[]  = new byte[bytes];
+        int missingBytes = bytes, n;
         try {
-            System.out.println(bytes);
-            int n = feed.read(buf,0,bytes);
-            System.err.println(bytes + " " + n);
-            byte reBuf[] = new byte[n];
-            System.arraycopy(buf,0,reBuf,0,n);
-            return reBuf;
-        } catch (IOException e) {
-            e.printStackTrace();
+            do {
+                n = feed.read(buf,bytes-missingBytes,missingBytes);
+                if(n == 0){
+                    byte reBuf[] = new byte[bytes - missingBytes];
+                    System.arraycopy(buf,0,reBuf,0,bytes - missingBytes);
+                }
+                missingBytes -=  n;
+            }while(missingBytes > 0);
+
+            return buf;
+
+         } catch (IOException e1) {
+            e1.printStackTrace();
+            return null;
         }
-        return null;
     }
 }

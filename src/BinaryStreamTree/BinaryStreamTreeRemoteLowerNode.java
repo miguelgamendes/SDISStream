@@ -34,8 +34,8 @@ public class BinaryStreamTreeRemoteLowerNode  extends BinaryStreamTreeRemoteNode
 
 
     public void send(byte[] data, int n) throws IOException {
-        System.err.println("-->" + n);
-            outputStream.write(data,0, n);
+        outputStream.write(data,0, n);
+        outputStream.flush();
         //TODO if exists a socket , send data to socket, else discard it.
     }
 }

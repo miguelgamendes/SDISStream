@@ -50,7 +50,7 @@ public class ReceiveFromPlayer extends Thread
                 System.exit(11);
             }
 
-            byte[] temp = new byte[packet.getLength() + 1];
+            byte[] temp = new byte[packet.getLength()];
             util.arrayCopy1(packet.getData(), temp);
             shared.add(temp);
         }
