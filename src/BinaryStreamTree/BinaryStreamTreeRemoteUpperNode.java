@@ -15,10 +15,12 @@ public class BinaryStreamTreeRemoteUpperNode extends BinaryStreamTreeRemoteNode{
 
     ServerSocket socket;
     BufferedReader feed;
+    int httpPort;
 
 
-    BinaryStreamTreeRemoteUpperNode(String address) throws IOException {
-        super(address);
+    BinaryStreamTreeRemoteUpperNode(String address, int httpport) throws IOException {
+        super(address, httpport);
+        this.httpPort = httpport;
         //HttpURLSecureConnection con = new HttpURLSecureConnection(new URL(address),port); //after this, there is a socket opened in a server peer
         socket = new ServerSocket(0);
         connect(address, socket.getLocalPort());
@@ -28,32 +30,22 @@ public class BinaryStreamTreeRemoteUpperNode extends BinaryStreamTreeRemoteNode{
 
     public void connect(String address, int myDataSocketPort) throws IOException {
         URL url;
-        //String url = "http://localhost:8000/test";
-        //URL obj = new URL(url);
-        String fatherInfo = "";
-        //while (fatherInfo == "") {
-            url = new URL("http://"+address+"/?port="+myDataSocketPort);
+
+        boolean sucess = false;
+        while(!sucess){
+            url = new URL("http://"+address+"/?socket_port="+myDataSocketPort+"&http_port="+httpPort);
             java.net.HttpURLConnection con = (java.net.HttpURLConnection) url.openConnection();
-            System.out.println("asdsad");
-            BufferedReader in = new BufferedReader(
-                    new InputStreamReader(con.getInputStream()));
-            String inputLine;
-            StringBuffer response = new StringBuffer();
-            /**while ((inputLine = in.readLine()) != null) {
-                response.append(inputLine);
-                String[] res = response.toString().split(":");
-                if (res[0] == "CON") {
-                    fatherInfo = res[1];
-                    return;
-                } else if (res[0] == "URL") {
-                    url = new URL(res[1]);
-                    //TODO connect(url,port);
-                    return;
-                }
-            }**/
-            in.close();
-        //}
-        //return fatherInfo;
+
+            int res = con.getResponseCode();
+            if(res == 200){
+                System.out.println("sucess address "+address);
+                sucess = true;
+            } else if (res == 300){
+               address = con.getHeaderField("Location");
+            }
+
+        }
+
 
     }
 

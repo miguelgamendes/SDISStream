@@ -23,7 +23,7 @@ public class BinaryStreamTreePeer extends BinaryStreamTreeNode {
 
     public BinaryStreamTreePeer(int BS3PPort, String BS3PParentAddress) throws IOException {
         super(BS3PPort);
-        parent = new BinaryStreamTreeRemoteUpperNode(BS3PParentAddress);
+        parent = new BinaryStreamTreeRemoteUpperNode(BS3PParentAddress, BS3PPort);
     }
 
 

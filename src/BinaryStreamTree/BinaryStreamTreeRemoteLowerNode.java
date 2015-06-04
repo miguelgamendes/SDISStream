@@ -15,8 +15,9 @@ public class BinaryStreamTreeRemoteLowerNode  extends BinaryStreamTreeRemoteNode
     Socket outputSocket;
     DataOutputStream outputStream;
 
-    BinaryStreamTreeRemoteLowerNode(String address, int port) throws IOException {
-        super(address);
+    BinaryStreamTreeRemoteLowerNode(String address, int httpport, int port) throws IOException {
+        super(address, httpport);
+        System.out.println("address!"+address+"!httpport!"+httpport+"!port!"+port);
         outputSocket = new Socket(address,port);
         outputStream = new DataOutputStream(outputSocket.getOutputStream());
     }

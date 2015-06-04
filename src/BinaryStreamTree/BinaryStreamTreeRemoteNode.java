@@ -18,9 +18,11 @@ public abstract class BinaryStreamTreeRemoteNode {
     //HttpURLSecureConnection httpConnection = null;
 
     String address;
+    int port;
 
-    BinaryStreamTreeRemoteNode(String address){
+    BinaryStreamTreeRemoteNode(String address, int port){
         this.address = address;
+        this.port = port;
     }
 
     /*** NOTIFICATIONS **/
@@ -32,4 +34,5 @@ public abstract class BinaryStreamTreeRemoteNode {
     public String getAddress() {
         return address;
     }
+    public int getPort() { return port; }
 }

@@ -1,6 +1,7 @@
 package BinaryStreamTree;
 
 import HttpSecure.HttpSecureServer;
+import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 
 import java.io.IOException;
@@ -15,10 +16,11 @@ public abstract class BinaryStreamTreeNode extends HttpSecureServer{
     protected BinaryStreamTreeRemoteLowerNode olderSon = null;
     protected BinaryStreamTreeRemoteLowerNode youngerSon = null;
 
+
     BinaryStreamTreeNode(int BS3PPort) throws IOException {
         super(BS3PPort);
-    }
 
+    }
     /**
      * thanks to http://stackoverflow.com/questions/11640025/java-httpserver-httpexchange-get
      * copy-past from http://www.rgagnon.com/javadetails/java-get-url-parameters-using-jdk-http-server.html
@@ -41,23 +43,31 @@ public abstract class BinaryStreamTreeNode extends HttpSecureServer{
 
     public void secureHandle(HttpExchange httpExchange) {
         //TODO implement treatment of client's requests. Switch case sort of stuff.
-        String response = "";
+        //String response = "";
         try {
-            int port = Integer.parseInt(queryToMap(httpExchange.getRequestURI().getQuery()).get("port"));
+            int socketPort = Integer.parseInt(queryToMap(httpExchange.getRequestURI().getQuery()).get("socket_port"));
+            int httpPort = Integer.parseInt(queryToMap(httpExchange.getRequestURI().getQuery()).get("http_port"));
 
             if(olderSon == null){
-                olderSon = new BinaryStreamTreeRemoteLowerNode(httpExchange.getRemoteAddress().getHostName(), port);
-                response = "CON";
+                olderSon = new BinaryStreamTreeRemoteLowerNode(httpExchange.getRemoteAddress().getHostName(),
+                        httpPort,socketPort);
+                httpExchange.sendResponseHeaders(200, "Sucess".length());
             } else if(youngerSon == null){
-                youngerSon = new BinaryStreamTreeRemoteLowerNode(httpExchange.getRemoteAddress().getHostName(),port);
-                response = "CON:";
+                youngerSon = new BinaryStreamTreeRemoteLowerNode(httpExchange.getRemoteAddress().getHostName(),
+                        httpPort,socketPort);
+                httpExchange.sendResponseHeaders(200, "Sucess".length());
             } else {
-                response = "URL:"+olderSon.getAddress();
+                //response = "URL:"+olderSon.getAddress();
+                String url = olderSon.getAddress()+":"+olderSon.getPort();
+                Headers headers = httpExchange.getResponseHeaders();
+                headers.add("Location", url);
+                System.out.println("LOcation url"+ url);
+                httpExchange.sendResponseHeaders(300, "Redirect".length());
             }
-            httpExchange.sendResponseHeaders(200, response.length());
-            OutputStream os = httpExchange.getResponseBody();
+            //httpExchange.sendResponseHeaders(200, response.length());
+            /*OutputStream os = httpExchange.getResponseBody();
             os.write(response.getBytes());
-            os.close();
+            os.close();*/
         } catch (IOException e) {
             e.printStackTrace();
         }
