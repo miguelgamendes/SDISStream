@@ -42,12 +42,17 @@ public abstract class BinaryStreamTreeNode extends HttpSecureServer{
         return result;
     }
 
-    public void secureHandle(HttpExchange httpExchange) {
+    public void secureHandle(HttpExchange httpExchange) throws IOException {
         //TODO implement treatment of client's requests. Switch case sort of stuff.
         //String response = "";
-        try {
-            int socketPort = Integer.parseInt(queryToMap(httpExchange.getRequestURI().getQuery()).get("socket_port"));
-            int httpPort = Integer.parseInt(queryToMap(httpExchange.getRequestURI().getQuery()).get("http_port"));
+            Map<String, String> params = queryToMap(httpExchange.getRequestURI().getQuery());
+            if(params.get("socket_port") == null ||  params.get("http_port") == null ){
+                throw new NumberFormatException();
+            }
+
+            int socketPort = Integer.parseInt(params.get("socket_port"));
+            int httpPort = Integer.parseInt(params.get("http_port"));
+
             if(olderSon == null){
                 olderSon = new BinaryStreamTreeRemoteLowerNode(httpExchange.getRemoteAddress().getHostName(),
                         httpPort,socketPort);
@@ -58,19 +63,12 @@ public abstract class BinaryStreamTreeNode extends HttpSecureServer{
                 httpExchange.sendResponseHeaders(200, "Sucess".length());
             } else {
                 //response = "URL:"+olderSon.getAddress();
-                String url = olderSon.getAddress()+":"+olderSon.getPort();
+                String url = "http://" + olderSon.getAddress()+":"+olderSon.getPort() + "/?" + httpExchange.getRequestURI().getQuery();
                 Headers headers = httpExchange.getResponseHeaders();
                 headers.add("Location", url);
                 System.out.println("LOcation url"+ url);
                 httpExchange.sendResponseHeaders(300, "Redirect".length());
             }
-           /** httpExchange.sendResponseHeaders(200, "stuff".length());
-            OutputStream os = httpExchange.getResponseBody();
-            os.write("stuff".getBytes());
-            os.close(); **/
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     protected void send(byte [] data, int n) {

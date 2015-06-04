@@ -40,8 +40,6 @@ public class BinaryStreamTreeRemoteUpperNode extends BinaryStreamTreeRemoteNode{
             if(res == 200){
                 System.out.println("sucess address "+address);
                 sucess = true;
-            } else if (res == 300){
-               address = con.getHeaderField("Location");
             }
 
         }

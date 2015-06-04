@@ -17,6 +17,9 @@ import java.util.concurrent.Executor;
 public abstract class HttpSecureServer implements HttpHandler {
     HttpServer httpServer;
 
+    public class BadRequest extends Exception{
+
+    }
 
     public HttpSecureServer(int port) throws IOException {
         httpServer = HttpServer.create(new InetSocketAddress(port), 0);
@@ -42,5 +45,5 @@ public abstract class HttpSecureServer implements HttpHandler {
         secureHandle(httpExchange);
     }
 
-    public abstract void secureHandle(HttpExchange httpExchange);
+    public abstract void secureHandle(HttpExchange httpExchange) throws IOException;
 }

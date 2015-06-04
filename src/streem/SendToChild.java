@@ -32,7 +32,7 @@ public class SendToChild extends Thread
         buffer = new byte[1500];
         
         try {
-            server = new BinaryStreamTreeServer(15001);
+            server = new BinaryStreamTreeServer(15000);
         } catch (IOException ex) {
             System.out.println("Failed to create binarystreamtreeserver");
         }
