@@ -5,17 +5,17 @@
  */
 package streem;
 
+import BinaryStreamTree.BinaryStreamTreeServer;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import static java.net.InetAddress.getByName;
 import java.net.SocketException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-/**
- *
- * @author tiago
- */
+
 public class SendToChild extends Thread
 {
 
@@ -25,6 +25,8 @@ public class SendToChild extends Thread
     DatagramPacket packet;
     DatagramSocket socket;
     
+    BinaryStreamTreeServer server;
+    
     byte[] buffer;
     
     public SendToChild(int port)
@@ -32,9 +34,15 @@ public class SendToChild extends Thread
         this.port = port;
         buffer = new byte[1500];
         
+        try {
+            server = new BinaryStreamTreeServer(this.port);
+        } catch (IOException ex) {
+            System.out.println("Failed to create binarystreamtreeserver");
+        }
+        
         try
         {
-            address = getByName("192.168.2.108");
+            address = getByName("192.168.109.218");
         } catch (Exception ex) {
             System.out.println("Host name failed");
             System.exit(20);
@@ -54,18 +62,24 @@ public class SendToChild extends Thread
         
         Shared shared = Shared.getInstance();
         
+        int size;
+        
         while (true)
         {
-            if (shared.queueReceiver.size() > 0)
+            if (!shared.empty())
             {
-                packet = new DatagramPacket(shared.queueReceiver.peek(), shared.queueReceiver.peek().length, address, port);
+                size = util.arrayCopy2(shared.remove(), buffer);
+                server.send(buffer);
+                
+                
+                //Deprecated
+                /*packet = new DatagramPacket(buffer, size, address, port);
                 try {
                     socket.send(packet);
                 } catch (IOException ex) {
                     System.out.println("FAILED TO SEND TO SOCKET");
                     System.exit(21);
-                }
-                shared.queueReceiver.remove();
+                }*/
             }
         }
     }

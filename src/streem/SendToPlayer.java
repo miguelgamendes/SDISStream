@@ -12,10 +12,7 @@ import java.net.InetAddress;
 import static java.net.InetAddress.getByName;
 import java.net.SocketException;
 
-/**
- *
- * @author tiago
- */
+
 public class SendToPlayer extends Thread
 {
 
@@ -54,18 +51,20 @@ public class SendToPlayer extends Thread
         
         Shared shared = Shared.getInstance();
         
+        int size;
+        
         while (true)
         {
-            if (shared.queueReceiver.size() > 0)
+            if (!shared.empty())
             {
-                packet = new DatagramPacket(shared.queueReceiver.peek(), shared.queueReceiver.peek().length, address, port);
+                size = util.arrayCopy2(shared.remove(), buffer);
+                packet = new DatagramPacket(buffer, size, address, port);
                 try {
                     socket.send(packet);
                 } catch (IOException ex) {
                     System.out.println("FAILED TO SEND TO SOCKET");
                     System.exit(21);
                 }
-                shared.queueReceiver.remove();
             }
         }
     }

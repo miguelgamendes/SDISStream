@@ -9,14 +9,9 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-/**
- *
- * @author tiago
- */
-public class Receiver extends Thread
+
+public class ReceiveFromPlayer extends Thread
 {
     
     private int port;
@@ -26,7 +21,7 @@ public class Receiver extends Thread
     
     byte[] buffer;
     
-    public Receiver(int port)
+    public ReceiveFromPlayer(int port)
     {
         this.port = port;
         buffer = new byte[1500];
@@ -54,8 +49,9 @@ public class Receiver extends Thread
                 System.out.println("FAILED TO RECEIVE FROM SOCKET");
                 System.exit(11);
             }
-            
-            shared.queueReceiver.add(packet.getData());
+            byte[] temp = new byte[util.getLenght(packet.getData()) + 1];
+            util.arrayCopy1(packet.getData(), temp);
+            shared.add(temp);
         }
     }
 }
