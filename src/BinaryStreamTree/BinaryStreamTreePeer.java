@@ -32,7 +32,7 @@ public class BinaryStreamTreePeer extends BinaryStreamTreeNode {
      * parent' socket resend it to it's children and return the upper layer.
      */
     public byte [] receive(int bytes) throws IOException {
-        byte [] data = parent.receive(20);
+        byte [] data = parent.receive(bytes);
         if(data ==null){
             System.out.println("asdasd");
         }

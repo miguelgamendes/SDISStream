@@ -10,7 +10,7 @@ public class TestBSTClient {
 
     public static void main(String args[]) throws IOException {
 
-        BinaryStreamTreePeer client = new BinaryStreamTreePeer(15003,"localhost:15001");
+        BinaryStreamTreePeer client = new BinaryStreamTreePeer(15003,"172.30.53.240:15001");
 
         while(true){
             System.out.println(client.receive(1)[0]);

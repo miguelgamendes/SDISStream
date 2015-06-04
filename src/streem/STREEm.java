@@ -52,8 +52,8 @@ public class STREEm {
                 SendToPlayer senderPlayer = new SendToPlayer(Integer.parseInt(args[2]));
                 senderPlayer.start();
 
-                SendToChild sender = new SendToChild(Integer.parseInt(args[1]));
-                sender.start();
+                //SendToChild sender = new SendToChild(Integer.parseInt(args[1]));
+                //sender.start();
                 
                 break;
             default:

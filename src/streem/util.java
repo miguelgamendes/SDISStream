@@ -38,6 +38,7 @@ public class util
      */
     public static int getLenght(byte[] array)
     {
+        System.out.println("fffff"+array.length);
         int i=array.length-1;
         while (array[i]== 0x0)
             i--;
