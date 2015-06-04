@@ -2,6 +2,7 @@ package BinaryStreamTree;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
@@ -34,8 +35,13 @@ public class BinaryStreamTreeRemoteLowerNode  extends BinaryStreamTreeRemoteNode
 
 
     public void send(byte[] data, int n) throws IOException {
-        outputStream.write(data,0, n);
-        outputStream.flush();
-        //TODO if exists a socket , send data to socket, else discard it.
+        try{
+            outputStream.write(data, 0, n);
+            outputStream.flush();
+        } catch (Exception e){
+            System.out.println("disconnected");
+        }
+
     }
+
 }

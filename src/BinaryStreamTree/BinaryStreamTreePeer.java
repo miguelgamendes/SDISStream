@@ -27,8 +27,7 @@ public class BinaryStreamTreePeer extends BinaryStreamTreeNode {
     public BinaryStreamTreePeer(int BS3PPort, String BS3PParentAddress) throws IOException {
         super(BS3PPort);
         parent = new BinaryStreamTreeRemoteUpperNode(BS3PParentAddress, BS3PPort);
-        godfather = parent.connect(BS3PParentAddress, parent.getSocketPort());
-        System.out.println("Merda da porta 1"+BS3PParentAddress);
+        godfather = parent.connect(BS3PParentAddress, parent.getSocketPort(),"false");
         if(godfather != null) System.out.println("My godfather is "+godfather.getAddress()+":"+godfather.getPort());
         parent.accept();
 
@@ -50,10 +49,10 @@ public class BinaryStreamTreePeer extends BinaryStreamTreeNode {
 
     public void handleDisconnection(){
         parent = godfather;
+        String address = parent.getAddress()+":"+parent.getPort();
         try {
             System.out.println("Connecting to godfather");
-            System.out.println("merda da porta 2 "+parent.getPort());
-            godfather = parent.connect(parent.getAddress()+":"+parent.getPort(), parent.getSocketPort());
+            godfather = parent.connect(address, parent.getSocketPort(),"true");
             parent.accept();
             System.out.println("Connected to godfather");
         } catch (IOException e) {
@@ -78,7 +77,7 @@ public class BinaryStreamTreePeer extends BinaryStreamTreeNode {
             send(data, data.length);
         } else {
             handleDisconnection();
-            receive(bytes);
+            return "1".getBytes();
         }
         return data;
     }

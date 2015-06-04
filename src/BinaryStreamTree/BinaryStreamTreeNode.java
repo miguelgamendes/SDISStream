@@ -52,8 +52,8 @@ public abstract class BinaryStreamTreeNode extends HttpSecureServer{
 
             int socketPort = Integer.parseInt(params.get("socket_port"));
             int httpPort = Integer.parseInt(params.get("http_port"));
-
-            if(olderSon == null){
+            String reconn = params.get("reconn");
+            if(olderSon == null || reconn.equals("true")){
                 olderSon = new BinaryStreamTreeRemoteLowerNode(httpExchange.getRemoteAddress().getHostName(),
                         httpPort,socketPort);
                 httpExchange.sendResponseHeaders(200, "Sucess".length());
@@ -82,7 +82,6 @@ public abstract class BinaryStreamTreeNode extends HttpSecureServer{
         try {
             if(olderSon != null) olderSon.send(data, n);
         }catch (IOException e){
-            System.out.println("fodasse");
             olderSon = null;
             e.printStackTrace();
         }

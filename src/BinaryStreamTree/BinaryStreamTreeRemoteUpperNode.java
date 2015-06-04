@@ -36,11 +36,12 @@ public class BinaryStreamTreeRemoteUpperNode extends BinaryStreamTreeRemoteNode{
         feed = new DataInputStream(conn.getInputStream());
     }
 
-    public BinaryStreamTreeRemoteUpperNode connect(String address, int myDataSocketPort) throws IOException {
+    public BinaryStreamTreeRemoteUpperNode connect(String address, int myDataSocketPort, String reconn) throws IOException {
         URL url;
         BinaryStreamTreeRemoteUpperNode godfather = null;
         try{
-            url = new URL("http://"+address+"/?socket_port="+myDataSocketPort+"&http_port="+httpPort);
+            url = new URL("http://"+address+"/?socket_port="+myDataSocketPort+"&http_port="+httpPort+"&reconn="+reconn);
+            System.out.println("try address "+url);
             java.net.HttpURLConnection con = (java.net.HttpURLConnection) url.openConnection();
 
 

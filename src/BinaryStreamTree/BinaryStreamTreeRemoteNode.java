@@ -35,4 +35,6 @@ public abstract class BinaryStreamTreeRemoteNode {
         return address;
     }
     public int getPort() { return port; }
+
+    public void setPort(int httpport) {  this.port = httpport; }
 }

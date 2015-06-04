@@ -8,7 +8,7 @@ import java.io.IOException;
 public class TestBSTClient2 {
     public static void main(String args[]) throws IOException {
 
-        BinaryStreamTreePeer client = new BinaryStreamTreePeer(15011,"172.30.53.240:15000");
+        BinaryStreamTreePeer client = new BinaryStreamTreePeer(15011,"localhost:15000");
 
         while(true){
             System.out.println(client.receive(1)[0]);
