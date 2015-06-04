@@ -14,41 +14,13 @@ import java.net.*;
 /**
  * Created by danfergo on 27-05-2015.
  */
-public class BinaryStreamTreeRemoteNode {
+public abstract class BinaryStreamTreeRemoteNode {
     //HttpURLSecureConnection httpConnection = null;
-    DataOutputStream outputStream = null;
-    Socket outSocket = null;
 
-    BinaryStreamTreeRemoteNode(String address, int port) {
-        try {
-            outSocket = new Socket(address,port);
-            outputStream = new DataOutputStream(outSocket.getOutputStream());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    String address;
 
-    }
-    //TODO connects?
-   /*
-    BufferedReader inFromUser = new BufferedReader( new InputStreamReader(System.in));
-    Socket clientSocket = new Socket("localhost", 6789);
-    DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
-    outToServer.writeBytes(sentence + '\n');
-    modifiedSentence = inFromServer.readLine();
-    System.out.println("FROM SERVER: " + modifiedSentence);
-    clientSocket.close(); */
-
-    public String getAddress(){
-        return outSocket.getInetAddress().getHostName();
-    }
-
-    public void send(byte[] data) {
-        //TODO if exists a socket , send data to socket, else discard it.
-    }
-
-
-    private void connect(){
-
+    BinaryStreamTreeRemoteNode(String address){
+        this.address = address;
     }
 
     /*** NOTIFICATIONS **/
@@ -57,4 +29,7 @@ public class BinaryStreamTreeRemoteNode {
     }
 
 
+    public String getAddress() {
+        return address;
+    }
 }

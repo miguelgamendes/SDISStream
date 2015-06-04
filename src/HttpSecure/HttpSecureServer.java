@@ -18,8 +18,8 @@ public abstract class HttpSecureServer implements HttpHandler {
     HttpServer httpServer;
 
 
-    public HttpSecureServer() throws IOException {
-        httpServer = HttpServer.create(new InetSocketAddress(0), 0);
+    public HttpSecureServer(int port) throws IOException {
+        httpServer = HttpServer.create(new InetSocketAddress(port), 0);
         httpServer.createContext("/", this);
         httpServer.setExecutor(null); // creates a default executor
         httpServer.start();

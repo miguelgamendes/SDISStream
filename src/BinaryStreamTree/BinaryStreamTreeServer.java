@@ -8,13 +8,12 @@ import java.net.DatagramPacket;
  */
 public class BinaryStreamTreeServer extends BinaryStreamTreeNode {
 
-    public BinaryStreamTreeServer() throws IOException {
-        super();
-
+    public BinaryStreamTreeServer(int BS3PPort) throws IOException {
+        super(BS3PPort);
     }
 
     public void send(byte [] data) {
-        send(data);
+        super.send(data);
     }
 
 }

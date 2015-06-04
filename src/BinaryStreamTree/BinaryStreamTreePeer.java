@@ -17,22 +17,13 @@ import java.net.UnknownHostException;
  */
 public class BinaryStreamTreePeer extends BinaryStreamTreeNode {
 
-    BinaryStreamTreeRemoteNode parent = null;
-    BinaryStreamTreeRemoteNode godfather = null;
-    BufferedReader feed;
-
-    int socketPort = 8001;
+    BinaryStreamTreeRemoteUpperNode parent = null;
+    BinaryStreamTreeRemoteUpperNode godfather = null;
 
 
-    public BinaryStreamTreePeer(InetAddress address) throws IOException {
-        super();
-
-        //TODO connect to parent. if it fails, throw some crappy exception. probably implement it in a separated method.
-        // = new ServerSocket(6789);
-    }
-
-    public BinaryStreamTreePeer(String address) throws IOException {
-        this(InetAddress.getByName(address));
+    public BinaryStreamTreePeer(int BS3PPort, String BS3PParentAddress) throws IOException {
+        super(BS3PPort);
+        parent = new BinaryStreamTreeRemoteUpperNode(BS3PParentAddress);
     }
 
 
@@ -41,18 +32,9 @@ public class BinaryStreamTreePeer extends BinaryStreamTreeNode {
      * parent' socket resend it to it's children and return the upper layer.
      */
     public byte [] receive() throws IOException {
-        byte [] data = feed.readLine().getBytes();
-        if(olderSon != null) olderSon.send(data);
-        if(youngerSon != null) olderSon.send(data);
+        byte [] data = parent.receive();
+        send(data);
         return data;
-    }
-
-    public void connect(URL url){
-        try {
-            HttpURLSecureConnection con = new HttpURLSecureConnection(url, socketPort);//after this, there is a socket opened in a server peer
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
 }

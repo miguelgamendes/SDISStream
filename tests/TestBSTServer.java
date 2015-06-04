@@ -8,15 +8,19 @@ import java.io.IOException;
  */
 public class TestBSTServer {
 
-    public static void main(String args[]) throws IOException {
+    public static void main(String args[]) throws IOException, InterruptedException {
 
-        BinaryStreamTreeServer server = new BinaryStreamTreeServer();
-
-        server.send("Hello world!".getBytes());
-        server.send("This is a simple BinaryStreamTree test.".getBytes());
-        server.send("We hope you like this stuff.".getBytes());
-        server.send("Use it for a lot of things,.".getBytes());
-        server.send("things that use stream., ".getBytes());
-        server.send("Tree Stream.".getBytes());
+        BinaryStreamTreeServer server = new BinaryStreamTreeServer(15001);
+        for (int i =0; i >= 0; i++) {
+           // server.send("Hello world!\n".getBytes());
+           // server.send("This is a simple BinaryStreamTree test.\n".getBytes());
+           // server.send("We hope you like this stuff.\n".getBytes());
+            //server.send("Use it for a lot of things,.\n".getBytes());
+            //server.send("things that use stream.\n".getBytes());
+            //server.send("Tree Stream.\n".getBytes());
+            server.send((i+"\n").getBytes());
+            System.out.println(i+"\n");
+            Thread.sleep(100);
+        }
     }
 }
