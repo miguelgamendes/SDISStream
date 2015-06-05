@@ -28,8 +28,6 @@ public class LowerNode extends RemoteNode {
     System.out.println("FROM SERVER: " + modifiedSentence);
     clientSocket.close(); */
 
-
-
     public void send(byte[] data, int n) throws IOException {
             outputStream.write(data, 0, n);
             outputStream.flush();

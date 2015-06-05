@@ -19,14 +19,13 @@ public class Peer extends Node {
         super(BS3PPort);
         parent = new UpperNode(BS3PParentAddress, BS3PPort);
         godfather = parent.connect(BS3PParentAddress, parent.getSocketPort());
-        if(godfather != null) System.out.println("My godfather is "+godfather.getAddress()+":"+godfather.getPort());
         parent.accept();
 
     }
 
     @Override
     public void handleConnectRequest(HttpExchange httpExchange) throws IOException {
-        Headers headers = httpExchange.getResponseHeaders();
+        Headers hewaders = httpExchange.getResponseHeaders();
 
         if(olderSon == null){
             httpExchange.getResponseHeaders().add("Godfather", parent.getAddress() + ":" + parent.getPort());
