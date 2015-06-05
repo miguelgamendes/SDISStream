@@ -19,7 +19,7 @@ import java.util.concurrent.locks.ReentrantLock;
 public abstract class Node extends HttpSecureServer{
     volatile protected LowerNode olderSon = null;
     volatile protected LowerNode youngerSon = null;
-    volatile boolean olderSonConfirmed, youngerSonConfirmed;
+    volatile protected boolean olderSonConfirmed, youngerSonConfirmed;
 
     Node(int BS3PPort) throws IOException {
         super(BS3PPort);
@@ -104,9 +104,9 @@ public abstract class Node extends HttpSecureServer{
 
 
 
-    protected void send(byte [] data, int n) {
+    protected void send(byte [] data, int n, boolean encrypt) {
             try { //TODO improve handlers.
-                if(youngerSon != null) youngerSon.send(data, n);
+                if(youngerSon != null) youngerSon.send(data, n, encrypt);
                 olderSonConfirmed = true;
             }catch (IOException e){
                 youngerSon = null;
@@ -114,7 +114,7 @@ public abstract class Node extends HttpSecureServer{
             }
 
             try {
-                if(olderSon != null) olderSon.send(data, n);
+                if(olderSon != null) olderSon.send(data, n,encrypt);
                 olderSonConfirmed = true;
             }catch (IOException e){
                 olderSon = null;

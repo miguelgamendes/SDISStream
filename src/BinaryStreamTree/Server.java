@@ -12,7 +12,7 @@ public class Server extends Node {
     }
 
     public void send(byte [] data, int n) {
-        super.send(data,n);
+            send(data,n,true);
     }
 
 }

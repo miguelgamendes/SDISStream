@@ -25,7 +25,7 @@ public class Peer extends Node {
 
     @Override
     public void handleConnectRequest(HttpExchange httpExchange) throws IOException {
-        Headers hewaders = httpExchange.getResponseHeaders();
+        Headers headers = httpExchange.getResponseHeaders();
 
         if(olderSon == null){
             httpExchange.getResponseHeaders().add("Godfather", parent.getAddress() + ":" + parent.getPort());
@@ -70,7 +70,7 @@ public class Peer extends Node {
             e.printStackTrace();
         }
         if(data != null){
-            send(data, data.length);
+            send(data, data.length,false);
         } else {
             handleDisconnection();
             return receive(bytes);
