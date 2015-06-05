@@ -1,32 +1,23 @@
 package BinaryStreamTree;
 
-import HttpSecure.HttpURLSecureConnection;
+import BinaryStreamTree.remote.UpperNode;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 
-import javax.sql.rowset.serial.SerialRef;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.InetAddress;
-import java.net.URL;
-import java.net.ServerSocket;
-import java.net.UnknownHostException;
-import java.rmi.server.ExportException;
-import java.util.Map;
 
 /**
  * Created by danfergo on 27-05-2015.
  */
-public class BinaryStreamTreePeer extends BinaryStreamTreeNode {
+public class Peer extends Node {
 
-    BinaryStreamTreeRemoteUpperNode parent = null;
-    BinaryStreamTreeRemoteUpperNode godfather = null;
+    UpperNode parent = null;
+    UpperNode godfather = null;
 
 
-    public BinaryStreamTreePeer(int BS3PPort, String BS3PParentAddress) throws IOException {
+    public Peer(int BS3PPort, String BS3PParentAddress) throws IOException {
         super(BS3PPort);
-        parent = new BinaryStreamTreeRemoteUpperNode(BS3PParentAddress, BS3PPort);
+        parent = new UpperNode(BS3PParentAddress, BS3PPort);
         godfather = parent.connect(BS3PParentAddress, parent.getSocketPort(),"false");
         if(godfather != null) System.out.println("My godfather is "+godfather.getAddress()+":"+godfather.getPort());
         parent.accept();
@@ -68,7 +59,7 @@ public class BinaryStreamTreePeer extends BinaryStreamTreeNode {
     }
 
     /**
-     * Requests video chunks from BinaryStreamTreeRemoteNode
+     * Requests video chunks from RemoteNode
      * parent' socket resend it to it's children and return the upper layer.
      */
     public byte [] receive(int bytes) throws AbortedConnectionException {

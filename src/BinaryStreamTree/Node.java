@@ -1,24 +1,23 @@
 package BinaryStreamTree;
 
+import BinaryStreamTree.remote.LowerNode;
 import HttpSecure.HttpSecureServer;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 
 import java.io.IOException;
-import java.io.OutputStream;
-import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * Created by danfergo on 27-05-2015.
  */
-public abstract class BinaryStreamTreeNode extends HttpSecureServer{
-    protected BinaryStreamTreeRemoteLowerNode olderSon = null;
-    protected BinaryStreamTreeRemoteLowerNode youngerSon = null;
+public abstract class Node extends HttpSecureServer{
+    protected LowerNode olderSon = null;
+    protected LowerNode youngerSon = null;
 
 
-    BinaryStreamTreeNode(int BS3PPort) throws IOException {
+    Node(int BS3PPort) throws IOException {
         super(BS3PPort);
 
     }
@@ -54,11 +53,11 @@ public abstract class BinaryStreamTreeNode extends HttpSecureServer{
             int httpPort = Integer.parseInt(params.get("http_port"));
             String reconn = params.get("reconn");
             if(olderSon == null || reconn.equals("true")){
-                olderSon = new BinaryStreamTreeRemoteLowerNode(httpExchange.getRemoteAddress().getHostName(),
+                olderSon = new LowerNode(httpExchange.getRemoteAddress().getHostName(),
                         httpPort,socketPort);
                 httpExchange.sendResponseHeaders(200, "Sucess".length());
             } else if(youngerSon == null){
-                youngerSon = new BinaryStreamTreeRemoteLowerNode(httpExchange.getRemoteAddress().getHostName(),
+                youngerSon = new LowerNode(httpExchange.getRemoteAddress().getHostName(),
                         httpPort,socketPort);
                 httpExchange.sendResponseHeaders(200, "Sucess".length());
             } else {

@@ -6,7 +6,8 @@
 package streem;
 
 import BinaryStreamTree.AbortedConnectionException;
-import BinaryStreamTree.BinaryStreamTreePeer;
+import BinaryStreamTree.Peer;
+
 import java.io.IOException;
 
 public class ReceiveFromParent extends Thread
@@ -16,17 +17,17 @@ public class ReceiveFromParent extends Thread
     
     byte[] buffer;
     
-    BinaryStreamTreePeer receiver;
+    Peer receiver;
     
     public ReceiveFromParent(int port)
     {
         this.port = port;
         //buffer = new byte[1500];
         try {
-            receiver = new BinaryStreamTreePeer(15001, "localhost:15000");
+            receiver = new Peer(15001, "localhost:15000");
         } catch (IOException ex) {
             ex.printStackTrace();
-            System.out.println("Failed to create BinaryStreamTreePeer");
+            System.out.println("Failed to create Peer");
         }
     }
     

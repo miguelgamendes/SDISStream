@@ -1,22 +1,18 @@
-package BinaryStreamTree;
+package BinaryStreamTree.remote;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.net.SocketAddress;
 
 /**
  * Created by danfergo on 03-06-2015.
  */
-public class BinaryStreamTreeRemoteLowerNode  extends BinaryStreamTreeRemoteNode{
+public class LowerNode extends RemoteNode {
 
     Socket outputSocket;
     DataOutputStream outputStream;
 
-    BinaryStreamTreeRemoteLowerNode(String address, int httpport, int port) throws IOException {
+    public LowerNode(String address, int httpport, int port) throws IOException {
         super(address, httpport);
         outputSocket = new Socket(address,port);
         outputStream = new DataOutputStream(outputSocket.getOutputStream());

@@ -1,4 +1,4 @@
-package BinaryStreamTree;
+package BinaryStreamTree.remote;
 
 import HttpSecure.HttpSecureServer;
 import HttpSecure.HttpURLSecureConnection;
@@ -14,13 +14,13 @@ import java.net.*;
 /**
  * Created by danfergo on 27-05-2015.
  */
-public abstract class BinaryStreamTreeRemoteNode {
+public abstract class RemoteNode {
     //HttpURLSecureConnection httpConnection = null;
 
     String address;
     int port;
 
-    BinaryStreamTreeRemoteNode(String address, int port){
+    RemoteNode(String address, int port){
         this.address = address;
         this.port = port;
     }

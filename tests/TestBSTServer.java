@@ -1,5 +1,4 @@
-import BinaryStreamTree.BinaryStreamTreePeer;
-import BinaryStreamTree.BinaryStreamTreeServer;
+import BinaryStreamTree.Server;
 
 import java.io.IOException;
 
@@ -10,7 +9,7 @@ public class TestBSTServer {
 
     public static void main(String args[]) throws IOException, InterruptedException {
 
-        BinaryStreamTreeServer server = new BinaryStreamTreeServer(15000);
+        Server server = new Server(15000);
         for (int i =0; i >= 0; i++) {
            // server.send("Hello world!\n".getBytes());
            // server.send("This is a simple BinaryStreamTree test.\n".getBytes());

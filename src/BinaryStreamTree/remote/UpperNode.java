@@ -1,6 +1,4 @@
-package BinaryStreamTree;
-
-import HttpSecure.HttpURLSecureConnection;
+package BinaryStreamTree.remote;
 
 import java.io.*;
 import java.net.*;
@@ -8,7 +6,7 @@ import java.net.*;
 /**
  * Created by danfergo on 03-06-2015.
  */
-public class BinaryStreamTreeRemoteUpperNode extends BinaryStreamTreeRemoteNode{
+public class UpperNode extends RemoteNode {
 
     ServerSocket socket;
     DataInputStream feed;
@@ -18,7 +16,7 @@ public class BinaryStreamTreeRemoteUpperNode extends BinaryStreamTreeRemoteNode{
         return httpPort;
     }
 
-    BinaryStreamTreeRemoteUpperNode(String address, int httpport) throws IOException {
+    public UpperNode(String address, int httpport) throws IOException {
 
         super(address, httpport);
         this.httpPort = httpport;
@@ -36,9 +34,9 @@ public class BinaryStreamTreeRemoteUpperNode extends BinaryStreamTreeRemoteNode{
         feed = new DataInputStream(conn.getInputStream());
     }
 
-    public BinaryStreamTreeRemoteUpperNode connect(String address, int myDataSocketPort, String reconn) throws IOException {
+    public UpperNode connect(String address, int myDataSocketPort, String reconn) throws IOException {
         URL url;
-        BinaryStreamTreeRemoteUpperNode godfather = null;
+        UpperNode godfather = null;
         try{
             url = new URL("http://"+address+"/?socket_port="+myDataSocketPort+"&http_port="+httpPort+"&reconn="+reconn);
             System.out.println("try address "+url);
@@ -49,7 +47,7 @@ public class BinaryStreamTreeRemoteUpperNode extends BinaryStreamTreeRemoteNode{
             if(gf != null){
                 String add = gf.split(":")[0];
                 int port = Integer.parseInt(gf.split(":")[1]);
-                godfather = new BinaryStreamTreeRemoteUpperNode(add,port);
+                godfather = new UpperNode(add,port);
             } else {
                 System.out.println("godfather is null");
             }

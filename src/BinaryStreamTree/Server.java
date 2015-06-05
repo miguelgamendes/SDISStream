@@ -1,14 +1,13 @@
 package BinaryStreamTree;
 
 import java.io.IOException;
-import java.net.DatagramPacket;
 
 /**
  * Created by danfergo on 27-05-2015.
  */
-public class BinaryStreamTreeServer extends BinaryStreamTreeNode {
+public class Server extends Node {
 
-    public BinaryStreamTreeServer(int BS3PPort) throws IOException {
+    public Server(int BS3PPort) throws IOException {
         super(BS3PPort);
     }
 

@@ -5,15 +5,10 @@
  */
 package streem;
 
-import BinaryStreamTree.BinaryStreamTreeServer;
+import BinaryStreamTree.Server;
+
 import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
 import java.net.InetAddress;
-import static java.net.InetAddress.getByName;
-import java.net.SocketException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 
 public class SendToChild extends Thread
@@ -22,7 +17,7 @@ public class SendToChild extends Thread
     private int port;
     private InetAddress address;
     
-    BinaryStreamTreeServer server;
+    Server server;
     
     byte[] buffer;
     
@@ -32,7 +27,7 @@ public class SendToChild extends Thread
         buffer = new byte[1500];
         
         try {
-            server = new BinaryStreamTreeServer(15000);
+            server = new Server(15000);
         } catch (IOException ex) {
             System.out.println("Failed to create binarystreamtreeserver");
         }
