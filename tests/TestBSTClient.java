@@ -1,3 +1,4 @@
+import BinaryStreamTree.AbortedConnectionException;
 import BinaryStreamTree.BinaryStreamTreeNode;
 import BinaryStreamTree.BinaryStreamTreePeer;
 
@@ -8,7 +9,7 @@ import java.io.IOException;
  */
 public class TestBSTClient {
 
-    public static void main(String args[]) throws IOException {
+    public static void main(String args[]) throws IOException, AbortedConnectionException {
 
         BinaryStreamTreePeer client = new BinaryStreamTreePeer(15010,"localhost:15000");
 

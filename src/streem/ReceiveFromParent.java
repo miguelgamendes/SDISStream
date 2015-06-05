@@ -5,6 +5,7 @@
  */
 package streem;
 
+import BinaryStreamTree.AbortedConnectionException;
 import BinaryStreamTree.BinaryStreamTreePeer;
 import java.io.IOException;
 
@@ -22,7 +23,7 @@ public class ReceiveFromParent extends Thread
         this.port = port;
         //buffer = new byte[1500];
         try {
-            receiver = new BinaryStreamTreePeer(15001, "172.30.49.127:15000");
+            receiver = new BinaryStreamTreePeer(15001, "localhost:15000");
         } catch (IOException ex) {
             ex.printStackTrace();
             System.out.println("Failed to create BinaryStreamTreePeer");
@@ -39,7 +40,7 @@ public class ReceiveFromParent extends Thread
            try {
                 byte[] temp = receiver.receive(1328);
                 shared.add(temp);
-            } catch (IOException ex) {
+            } catch (AbortedConnectionException ex) {
                 System.out.println("Failed to receive");
             }
         }

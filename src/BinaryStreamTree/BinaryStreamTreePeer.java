@@ -47,17 +47,23 @@ public class BinaryStreamTreePeer extends BinaryStreamTreeNode {
 
     }
 
-    public void handleDisconnection(){
-        parent = godfather;
-        String address = parent.getAddress()+":"+parent.getPort();
-        try {
-            System.out.println("Connecting to godfather");
-            godfather = parent.connect(address, parent.getSocketPort(),"true");
-            parent.accept();
-            System.out.println("Connected to godfather");
-        } catch (IOException e) {
-            System.out.println("Not connected");
-            e.printStackTrace();
+    public void handleDisconnection() throws AbortedConnectionException {
+        if(godfather == null){
+            System.out.println("Does not exist a godfather, so it's impossible to reconnect.");
+            throw new AbortedConnectionException();
+        }else {
+            parent = godfather;
+            String address = parent.getAddress() + ":" + parent.getPort();
+            try {
+                System.out.println("Connecting to godfather");
+                godfather = parent.connect(address, parent.getSocketPort(), "true");
+                parent.accept();
+                System.out.println("Connected to godfather");
+            } catch (IOException e) {
+                System.out.println("Not connected");
+                e.printStackTrace();
+                throw new AbortedConnectionException();
+            }
         }
     }
 
@@ -65,7 +71,7 @@ public class BinaryStreamTreePeer extends BinaryStreamTreeNode {
      * Requests video chunks from BinaryStreamTreeRemoteNode
      * parent' socket resend it to it's children and return the upper layer.
      */
-    public byte [] receive(int bytes) {
+    public byte [] receive(int bytes) throws AbortedConnectionException {
         byte [] data = new byte[0];
         try {
             data = parent.receive(bytes);
@@ -73,11 +79,11 @@ public class BinaryStreamTreePeer extends BinaryStreamTreeNode {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        if(data !=null){
+        if(data != null){
             send(data, data.length);
         } else {
             handleDisconnection();
-            return "1".getBytes();
+            return receive(bytes);
         }
         return data;
     }

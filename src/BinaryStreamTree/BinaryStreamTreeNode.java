@@ -76,14 +76,14 @@ public abstract class BinaryStreamTreeNode extends HttpSecureServer{
             if(youngerSon != null) youngerSon.send(data, n);
         }catch (IOException e){
             youngerSon = null;
-            e.printStackTrace();
+            System.out.println("Youngest son, disconnected without notify it.");
         }
 
         try {
             if(olderSon != null) olderSon.send(data, n);
         }catch (IOException e){
             olderSon = null;
-            e.printStackTrace();
+            System.out.println("Oldest son, disconnected without notify it.");
         }
     }
 

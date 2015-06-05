@@ -35,13 +35,8 @@ public class BinaryStreamTreeRemoteLowerNode  extends BinaryStreamTreeRemoteNode
 
 
     public void send(byte[] data, int n) throws IOException {
-        try{
             outputStream.write(data, 0, n);
             outputStream.flush();
-        } catch (Exception e){
-            System.out.println("disconnected");
-        }
-
     }
 
 }
