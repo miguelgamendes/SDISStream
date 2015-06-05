@@ -17,7 +17,8 @@ public class STREEm {
     {
         if (args.length != 3)
         {
-            System.out.println("WRONG NUMBER OF ARGUMENTS\nUSAGE: APP SERVER/CLIENT ReceiverPort SenderPort");
+            System.out.println("WRONG NUMBER OF ARGUMENTS\nUSAGE FOR SERVER: SERVER PlayerPort ServerPort\n"
+                    + "USAGE FOR CLIENT: CLIENT ServerAddress:PORT PlayerPort");
             System.exit(1);
         }
         
@@ -46,14 +47,11 @@ public class STREEm {
                 
                 break;
             case CLIENT:
-                ReceiveFromParent receiverFromParent = new ReceiveFromParent(Integer.parseInt(args[1]));
+                ReceiveFromParent receiverFromParent = new ReceiveFromParent(args[1]);
                 receiverFromParent.start();
                 
                 SendToPlayer senderPlayer = new SendToPlayer(Integer.parseInt(args[2]));
                 senderPlayer.start();
-
-                //SendToChild sender = new SendToChild(Integer.parseInt(args[1]));
-                //sender.start();
                 
                 break;
             default:

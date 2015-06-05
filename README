@@ -1,0 +1,45 @@
+/*****************************************************************************************
+ *
+ *                       Sistemas Distribuídos - 2014/2015
+ *                                    sTREEM
+ *
+ ***************************************************************************************** 
+ * Turma 3 Grupo 06:
+ * 
+ * Daniel Fernandes Gomes                               201306839
+ * Diogo Alexandre Soares Gomes                         201106586
+ * Miguel Geraldes Antunes Mendes                       201105535
+ * Miguel Jorge Gonçalves Pereira                       201402671
+ * Tiago André da Rocha Ferreira			201009013
+ *****************************************************************************************
+
+
+Para poder usar a aplicação terá de usar o software VLC Player
+O software pode ser obtido nos repositórios ou em  http://www.videolan.org/
+
+A aplicação tem dois modos de funcionamento:
+    - Server
+    - Client
+
+Para usar a aplicação em modo de SERVER:
+1. Abrir o VLC Player
+2. Escolher Media -> Stream
+3. Adicionar os arquivos de vídeo e clicar em Stream e de seguida Next
+4. Escolher "RTP / MPEG Transport Stream" e clicar em Add
+5. Colocar como endereço "localhost" e a porta desejada e clicar em Next
+6. Clicar em Next e de seguida Stream
+7. Abrir a aplicação com os seguintes argumentos:
+    java run server PlayerPort ServerPort
+        server - Indica à aplicação para correr em modo de SERVER
+        PlayerPort - Porta indicada no VLC Player para fazer stream
+        ServerPort - Porta usada pelo servidor para os clientes se ligarem
+
+Para usar a aplicação em modo de CLIENT:
+1. Abrir o VLC Player
+2. Escolher Media -> Open Network Stream
+3. Introduzir o endereço "rtp://@:port", sendo que port será a porta a que a aplicação se ligará
+4. Abrir a aplicação com os seguintes argumentos:
+    java run client ServerAddress:PORT PlayerPort
+        client - Indica à aplicação para correr em modo de CLIENT
+        ServerAddress:PORT - Introduzir o endereço e porta do servidor no formato 'endereço:porta'
+        PlayerPort - Porta indicada no VLC Player para fazer stream
