@@ -71,21 +71,22 @@ public abstract class Node extends HttpSecureServer{
 
         int socketPort = Integer.parseInt(params.get("socket_port"));
         int httpPort = Integer.parseInt(params.get("http_port"));
-        String reconn = params.get("reconn");
-        if(olderSon == null || reconn.equals("true")){
+       /// String reconn = params.get("reconn");
+        if(olderSon == null /*|| reconn.equals("true")*/){
+            System.out.println("New child is OlderSon");
             olderSon = new LowerNode(httpExchange.getRemoteAddress().getHostName(),
                     httpPort,socketPort);
             httpExchange.sendResponseHeaders(200, "Sucess".length());
         } else if(youngerSon == null){
             youngerSon = new LowerNode(httpExchange.getRemoteAddress().getHostName(),
                     httpPort,socketPort);
+            System.out.println("New child is youngerSon");
             httpExchange.sendResponseHeaders(200, "Sucess".length());
         } else {
-            //response = "URL:"+olderSon.getAddress();
-            String url = "http://" + olderSon.getAddress()+":"+olderSon.getPort() + "/?" + httpExchange.getRequestURI().getQuery();
+            String url = "http://" + olderSon.getAddress()+":"+olderSon.getPort() + httpExchange.getRequestURI();
             Headers headers = httpExchange.getResponseHeaders();
             headers.add("Location", url);
-            System.out.println("LOcation url"+ url);
+            System.out.println("New child request redirected to url Location "+ url);
             httpExchange.sendResponseHeaders(300, "Redirect".length());
         }
     }

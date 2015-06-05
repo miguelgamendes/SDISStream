@@ -18,7 +18,7 @@ public class Peer extends Node {
     public Peer(int BS3PPort, String BS3PParentAddress) throws IOException {
         super(BS3PPort);
         parent = new UpperNode(BS3PParentAddress, BS3PPort);
-        godfather = parent.connect(BS3PParentAddress, parent.getSocketPort(),"false");
+        godfather = parent.connect(BS3PParentAddress, parent.getSocketPort());
         if(godfather != null) System.out.println("My godfather is "+godfather.getAddress()+":"+godfather.getPort());
         parent.accept();
 
@@ -34,7 +34,7 @@ public class Peer extends Node {
             httpExchange.getResponseHeaders().add("Godfather", olderSon.getAddress() + ":" + olderSon.getPort());
         }
 
-        super.secureHandle(httpExchange);
+        super.handleConnectRequest(httpExchange);
 
     }
 
@@ -47,7 +47,7 @@ public class Peer extends Node {
             String address = parent.getAddress() + ":" + parent.getPort();
             try {
                 System.out.println("Connecting to godfather");
-                godfather = parent.connect(address, parent.getSocketPort(), "true");
+                godfather = parent.connect(address, parent.getSocketPort());
                 parent.accept();
                 System.out.println("Connected to godfather");
             } catch (IOException e) {

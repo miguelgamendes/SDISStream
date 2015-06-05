@@ -34,11 +34,11 @@ public class UpperNode extends RemoteNode {
         feed = new DataInputStream(conn.getInputStream());
     }
 
-    public UpperNode connect(String address, int myDataSocketPort, String reconn) throws IOException {
+    public UpperNode connect(String address, int myDataSocketPort) throws IOException {
         URL url;
         UpperNode godfather = null;
         try{
-            url = new URL("http://"+address+"/connect/?socket_port="+myDataSocketPort+"&http_port="+httpPort+"&reconn="+reconn);
+            url = new URL("http://"+address+"/connect/?socket_port="+myDataSocketPort+"&http_port="+httpPort);
             System.out.println("try address "+url);
             java.net.HttpURLConnection con = (java.net.HttpURLConnection) url.openConnection();
 
