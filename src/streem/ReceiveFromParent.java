@@ -13,18 +13,18 @@ import java.io.IOException;
 public class ReceiveFromParent extends Thread
 {
     
-    private int port;
+    //private int port;
     
     byte[] buffer;
     
     Peer receiver;
     
-    public ReceiveFromParent(int port)
+    public ReceiveFromParent(String address)
     {
-        this.port = port;
+        //this.port = port;
         //buffer = new byte[1500];
         try {
-            receiver = new Peer(15001, "localhost:15000");
+            receiver = new Peer(15001, address);
         } catch (IOException ex) {
             ex.printStackTrace();
             System.out.println("Failed to create Peer");
