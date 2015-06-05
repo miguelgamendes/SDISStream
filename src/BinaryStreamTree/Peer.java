@@ -25,7 +25,7 @@ public class Peer extends Node {
     }
 
     @Override
-    public void secureHandle(HttpExchange httpExchange) throws IOException {
+    public void handleConnectRequest(HttpExchange httpExchange) throws IOException {
         Headers headers = httpExchange.getResponseHeaders();
 
         if(olderSon == null){

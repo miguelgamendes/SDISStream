@@ -38,7 +38,7 @@ public class UpperNode extends RemoteNode {
         URL url;
         UpperNode godfather = null;
         try{
-            url = new URL("http://"+address+"/?socket_port="+myDataSocketPort+"&http_port="+httpPort+"&reconn="+reconn);
+            url = new URL("http://"+address+"/connect/?socket_port="+myDataSocketPort+"&http_port="+httpPort+"&reconn="+reconn);
             System.out.println("try address "+url);
             java.net.HttpURLConnection con = (java.net.HttpURLConnection) url.openConnection();
 

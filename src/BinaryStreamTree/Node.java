@@ -2,6 +2,7 @@ package BinaryStreamTree;
 
 import BinaryStreamTree.remote.LowerNode;
 import HttpSecure.HttpSecureServer;
+import HttpSecure.HttpURLSecureConnection;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 
@@ -43,32 +44,53 @@ public abstract class Node extends HttpSecureServer{
 
     public void secureHandle(HttpExchange httpExchange) throws IOException {
         //TODO implement treatment of client's requests. Switch case sort of stuff.
-        //String response = "";
-            Map<String, String> params = queryToMap(httpExchange.getRequestURI().getQuery());
-            if(params.get("socket_port") == null ||  params.get("http_port") == null ){
-                throw new NumberFormatException();
-            }
+        switch (httpExchange.getRequestURI().getPath()) {
+            case "/connect/":
+                handleConnectRequest(httpExchange);
+                break;
+            case "/status/":
+                handleStatusRequest(httpExchange);
+        }
 
-            int socketPort = Integer.parseInt(params.get("socket_port"));
-            int httpPort = Integer.parseInt(params.get("http_port"));
-            String reconn = params.get("reconn");
-            if(olderSon == null || reconn.equals("true")){
-                olderSon = new LowerNode(httpExchange.getRemoteAddress().getHostName(),
-                        httpPort,socketPort);
-                httpExchange.sendResponseHeaders(200, "Sucess".length());
-            } else if(youngerSon == null){
-                youngerSon = new LowerNode(httpExchange.getRemoteAddress().getHostName(),
-                        httpPort,socketPort);
-                httpExchange.sendResponseHeaders(200, "Sucess".length());
-            } else {
-                //response = "URL:"+olderSon.getAddress();
-                String url = "http://" + olderSon.getAddress()+":"+olderSon.getPort() + "/?" + httpExchange.getRequestURI().getQuery();
-                Headers headers = httpExchange.getResponseHeaders();
-                headers.add("Location", url);
-                System.out.println("LOcation url"+ url);
-                httpExchange.sendResponseHeaders(300, "Redirect".length());
-            }
     }
+
+    private void handleStatusRequest(HttpExchange httpExchange) {
+        System.out.println(httpExchange.getRequestMethod());
+        /* switch (httpExchange.getRequestMethod()){
+
+        }*/
+    }
+
+
+    public void handleConnectRequest(HttpExchange httpExchange) throws IOException {
+        Map<String, String> params = queryToMap(httpExchange.getRequestURI().getQuery());
+
+        if(params.get("socket_port") == null ||  params.get("http_port") == null ){
+            throw new NumberFormatException();
+        }
+
+        int socketPort = Integer.parseInt(params.get("socket_port"));
+        int httpPort = Integer.parseInt(params.get("http_port"));
+        String reconn = params.get("reconn");
+        if(olderSon == null || reconn.equals("true")){
+            olderSon = new LowerNode(httpExchange.getRemoteAddress().getHostName(),
+                    httpPort,socketPort);
+            httpExchange.sendResponseHeaders(200, "Sucess".length());
+        } else if(youngerSon == null){
+            youngerSon = new LowerNode(httpExchange.getRemoteAddress().getHostName(),
+                    httpPort,socketPort);
+            httpExchange.sendResponseHeaders(200, "Sucess".length());
+        } else {
+            //response = "URL:"+olderSon.getAddress();
+            String url = "http://" + olderSon.getAddress()+":"+olderSon.getPort() + "/?" + httpExchange.getRequestURI().getQuery();
+            Headers headers = httpExchange.getResponseHeaders();
+            headers.add("Location", url);
+            System.out.println("LOcation url"+ url);
+            httpExchange.sendResponseHeaders(300, "Redirect".length());
+        }
+    }
+
+
 
     protected void send(byte [] data, int n) {
         try { //TODO improve handlers.
