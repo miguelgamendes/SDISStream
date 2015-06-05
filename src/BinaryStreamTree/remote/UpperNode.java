@@ -39,19 +39,20 @@ public class UpperNode extends RemoteNode {
         UpperNode godfather = null;
         try{
             url = new URL("http://"+address+"/connect/?socket_port="+myDataSocketPort+"&http_port="+httpPort);
-            System.out.println("try address "+url);
+            System.out.println("Try address: "+url);
             java.net.HttpURLConnection con = (java.net.HttpURLConnection) url.openConnection();
 
+            System.out.println("Success address: "+con.getURL());
 
             String gf = con.getHeaderField("Godfather");
             if(gf != null){
                 String add = gf.split(":")[0];
                 int port = Integer.parseInt(gf.split(":")[1]);
                 godfather = new UpperNode(add,port);
+                System.out.println("My godfather is: "+godfather.getAddress()+":"+godfather.getPort());
             } else {
-                System.out.println("godfather is null");
+                System.out.println("I have no godfather.");
             }
-            System.out.println("sucess address "+con.getURL());
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -67,8 +68,8 @@ public class UpperNode extends RemoteNode {
 
         do {
             n = feed.read(buf,bytes-missingBytes,missingBytes);
-            if(n == -1) return null;
-            if(n == 0){
+            if(n == -1) {
+                if(missingBytes == bytes) return null;
                 byte reBuf[] = new byte[bytes - missingBytes];
                 System.arraycopy(buf,0,reBuf,0,bytes - missingBytes);
             }

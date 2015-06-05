@@ -9,14 +9,17 @@ import com.sun.net.httpserver.HttpExchange;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Created by danfergo on 27-05-2015.
  */
 public abstract class Node extends HttpSecureServer{
-    protected LowerNode olderSon = null;
-    protected LowerNode youngerSon = null;
-
+    volatile protected LowerNode olderSon = null;
+    volatile protected LowerNode youngerSon = null;
+    volatile boolean olderSonConfirmed, youngerSonConfirmed;
 
     Node(int BS3PPort) throws IOException {
         super(BS3PPort);
@@ -65,51 +68,59 @@ public abstract class Node extends HttpSecureServer{
     public void handleConnectRequest(HttpExchange httpExchange) throws IOException {
         Map<String, String> params = queryToMap(httpExchange.getRequestURI().getQuery());
 
+        //ensuring that: if a peer exists, we need to wait for its confirmation.
         if(params.get("socket_port") == null ||  params.get("http_port") == null ){
             throw new NumberFormatException();
         }
 
         int socketPort = Integer.parseInt(params.get("socket_port"));
         int httpPort = Integer.parseInt(params.get("http_port"));
-       /// String reconn = params.get("reconn");
-        if(olderSon == null /*|| reconn.equals("true")*/){
-            System.out.println("New child is OlderSon");
-            olderSon = new LowerNode(httpExchange.getRemoteAddress().getHostName(),
-                    httpPort,socketPort);
-            httpExchange.sendResponseHeaders(200, "Sucess".length());
-        } else if(youngerSon == null){
-            youngerSon = new LowerNode(httpExchange.getRemoteAddress().getHostName(),
-                    httpPort,socketPort);
-            System.out.println("New child is youngerSon");
-            httpExchange.sendResponseHeaders(200, "Sucess".length());
-        } else {
-            String url = "http://" + olderSon.getAddress()+":"+olderSon.getPort() + httpExchange.getRequestURI();
-            Headers headers = httpExchange.getResponseHeaders();
-            headers.add("Location", url);
-            System.out.println("New child request redirected to url Location "+ url);
-            httpExchange.sendResponseHeaders(300, "Redirect".length());
+
+        olderSonConfirmed = false;
+        youngerSonConfirmed = false;
+        while (olderSon != null && !olderSonConfirmed && !youngerSonConfirmed && youngerSon != null){
+            try {Thread.sleep(10); } catch (InterruptedException e) { e.printStackTrace();}
         }
+
+            if (olderSon == null) {
+                System.out.println("New child is OlderSon");
+                olderSon = new LowerNode(httpExchange.getRemoteAddress().getHostName(),
+                        httpPort, socketPort);
+                httpExchange.sendResponseHeaders(200, "Sucess".length());
+            } else if (youngerSon == null) {
+                youngerSon = new LowerNode(httpExchange.getRemoteAddress().getHostName(),
+                        httpPort, socketPort);
+                System.out.println("New child is youngerSon");
+                httpExchange.sendResponseHeaders(200, "Sucess".length());
+            } else {
+                String url = "http://" + olderSon.getAddress() + ":" + olderSon.getPort() + httpExchange.getRequestURI();
+                Headers headers = httpExchange.getResponseHeaders();
+                headers.add("Location", url);
+                System.out.println("New child request redirected to url Location " + url);
+                httpExchange.sendResponseHeaders(300, "Redirect".length());
+            }
+
     }
 
 
 
     protected void send(byte [] data, int n) {
-        try { //TODO improve handlers.
-            if(youngerSon != null) youngerSon.send(data, n);
-        }catch (IOException e){
-            youngerSon = null;
-            System.out.println("Youngest son, disconnected without notify it.");
-        }
+            try { //TODO improve handlers.
+                if(youngerSon != null) youngerSon.send(data, n);
+                olderSonConfirmed = true;
+            }catch (IOException e){
+                youngerSon = null;
+                System.out.println("Youngest son, disconnected without notify it.");
+            }
 
-        try {
-            if(olderSon != null) olderSon.send(data, n);
-        }catch (IOException e){
-            olderSon = null;
-            System.out.println("Oldest son, disconnected without notify it.");
-        }
+            try {
+                if(olderSon != null) olderSon.send(data, n);
+                olderSonConfirmed = true;
+            }catch (IOException e){
+                olderSon = null;
+                System.out.println("Oldest son, disconnected without notify it.");
+            }
+
     }
-
-
-
 
 }
