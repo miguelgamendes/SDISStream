@@ -117,7 +117,8 @@ public abstract class Node extends HttpSecureServer{
                 if(olderSon != null) olderSon.send(data, n,encrypt);
                 olderSonConfirmed = true;
             }catch (IOException e){
-                olderSon = null;
+                olderSon = youngerSon;
+                youngerSon = null;
                 System.out.println("Oldest son, disconnected without notify it.");
             }
 

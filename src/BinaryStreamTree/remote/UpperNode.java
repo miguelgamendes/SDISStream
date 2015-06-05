@@ -41,6 +41,7 @@ public class UpperNode extends RemoteNode {
             url = new URL("http://"+address+"/connect/?socket_port="+myDataSocketPort+"&http_port="+httpPort);
             System.out.println("Try address: "+url);
             java.net.HttpURLConnection con = (java.net.HttpURLConnection) url.openConnection();
+            con.connect();
 
             System.out.println("Success address: "+con.getURL());
 

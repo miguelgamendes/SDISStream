@@ -8,7 +8,7 @@ import java.io.IOException;
 public class TestBSTServer {
 
     public static void main(String args[]) throws IOException, InterruptedException {
-
+        System.out.println("Server test");
         Server server = new Server(15000);
         for (int i =0; i >= 0; i++) {
            // server.send("Hello world!\n".getBytes());
@@ -20,7 +20,7 @@ public class TestBSTServer {
             byte xx[] = new byte[1];
             xx[0] = (byte)i;
             server.send(xx,1);
-            //System.out.println(xx[0]);
+            System.out.println(xx[0]);
             Thread.sleep(100);
         }
     }
