@@ -28,6 +28,7 @@ public class ReceiveFromParent extends Thread
         } catch (IOException ex) {
             ex.printStackTrace();
             System.out.println("Failed to create Peer");
+            System.exit(10);
         }
     }
     
@@ -43,6 +44,7 @@ public class ReceiveFromParent extends Thread
                 shared.add(temp);
             } catch (AbortedConnectionException ex) {
                 System.out.println("Failed to receive");
+                System.exit(11);
             }
         }
     }
