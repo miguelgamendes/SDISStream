@@ -39,7 +39,8 @@ Para usar a aplicação em modo de CLIENT:
 2. Escolher Media -> Open Network Stream
 3. Introduzir o endereço "rtp://@:port", sendo que port será a porta a que a aplicação se ligará
 4. Abrir a aplicação com os seguintes argumentos:
-    java run client ServerAddress:PORT PlayerPort
+    java run client HTTPPort ServerAddress:PORT PlayerPort
         client - Indica à aplicação para correr em modo de CLIENT
+        HTTPPort
         ServerAddress:PORT - Introduzir o endereço e porta do servidor no formato 'endereço:porta'
         PlayerPort - Porta indicada no VLC Player para fazer stream

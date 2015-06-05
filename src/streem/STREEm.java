@@ -15,10 +15,10 @@ public class STREEm {
     
     public void main(String[] args)
     {
-        if (args.length != 3)
+        if ((args.length != 3) && (args.length != 4))
         {
             System.out.println("WRONG NUMBER OF ARGUMENTS\nUSAGE FOR SERVER: SERVER PlayerPort ServerPort\n"
-                    + "USAGE FOR CLIENT: CLIENT ServerAddress:PORT PlayerPort");
+                    + "USAGE FOR CLIENT: CLIENT HTTPPort ServerAddress:PORT PlayerPort");
             System.exit(1);
         }
         
@@ -47,10 +47,10 @@ public class STREEm {
                 
                 break;
             case CLIENT:
-                ReceiveFromParent receiverFromParent = new ReceiveFromParent(args[1]);
+                ReceiveFromParent receiverFromParent = new ReceiveFromParent(Integer.parseInt(args[1]), args[2]);
                 receiverFromParent.start();
                 
-                SendToPlayer senderPlayer = new SendToPlayer(Integer.parseInt(args[2]));
+                SendToPlayer senderPlayer = new SendToPlayer(Integer.parseInt(args[3]));
                 senderPlayer.start();
                 
                 break;
