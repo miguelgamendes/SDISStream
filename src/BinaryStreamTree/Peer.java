@@ -4,12 +4,13 @@ import BinaryStreamTree.remote.UpperNode;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 
+import javax.swing.plaf.basic.BasicTreeUI;
 import java.io.IOException;
 
 /**
  * Created by danfergo on 27-05-2015.
  */
-public class Peer extends Node {
+public class Peer extends Node implements Runnable {
 
     UpperNode parent = null;
     UpperNode godfather = null;
@@ -20,7 +21,7 @@ public class Peer extends Node {
         parent = new UpperNode(BS3PParentAddress, BS3PPort);
         godfather = parent.connect(BS3PParentAddress, parent.getSocketPort());
         parent.accept();
-
+        new Thread(this).start();
     }
 
     @Override
@@ -62,20 +63,38 @@ public class Peer extends Node {
      * parent' socket resend it to it's children and return the upper layer.
      */
     public byte [] receive(int bytes) throws AbortedConnectionException {
+        System.out.println("requested bytes" + bytes);
         byte [] data = new byte[0];
         try {
             data = parent.receive(bytes);
-
+            if(data == null){
+                handleDisconnection();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        if(data != null){
-            send(data, data.length,false);
-        } else {
-            handleDisconnection();
-            return receive(bytes);
-        }
         return data;
+    }
+
+    @Override
+    public void run() {
+        while(true) {
+        byte[] data = new byte[15000];
+        int n;
+            try {
+                n = parent.readEncrypted(data,0,15000);
+                send(data,n,false);
+            } catch (NullPointerException e) {
+                // this should append because of concurrency.
+            } catch (IOException e) {
+                try {
+                    handleDisconnection();
+                } catch (AbortedConnectionException e1) {
+                    e1.printStackTrace();
+                }
+            }
+
+        }
     }
 
 }

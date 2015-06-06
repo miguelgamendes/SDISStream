@@ -13,7 +13,9 @@ public class TestBSTClient {
         Peer client = new Peer(15010,"localhost:15000");
 
         while(true){
-            System.out.println(client.receive(1)[0]);
+            byte [] b = client.receive(4);
+            System.out.println(b[0] + " " + b[1] +" "+  b[2] + " " + b[3]);
+
         }
 
     }

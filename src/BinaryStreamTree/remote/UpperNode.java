@@ -1,15 +1,26 @@
 package BinaryStreamTree.remote;
 
-import java.io.*;
-import java.net.*;
+import HttpSecure.SecureDataInputStream;
+import com.sun.org.apache.xpath.internal.SourceTree;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.net.URL;
+import java.security.KeyFactory;
+import java.security.PublicKey;
+import java.security.spec.X509EncodedKeySpec;
+import java.util.Base64;
 
 /**
  * Created by danfergo on 03-06-2015.
  */
 public class UpperNode extends RemoteNode {
-
+    PublicKey pubKey;
     ServerSocket socket;
-    DataInputStream feed;
+    SecureDataInputStream feed;
     int httpPort;
 
     public int getHttpPort(){
@@ -31,7 +42,7 @@ public class UpperNode extends RemoteNode {
     public void accept() throws IOException {
 
         Socket conn = socket.accept();
-        feed = new DataInputStream(conn.getInputStream());
+        feed = new SecureDataInputStream(conn.getInputStream());
     }
 
     public UpperNode connect(String address, int myDataSocketPort) throws IOException {
@@ -42,8 +53,20 @@ public class UpperNode extends RemoteNode {
             System.out.println("Try address: "+url);
             java.net.HttpURLConnection con = (java.net.HttpURLConnection) url.openConnection();
             con.connect();
+            System.out.println("Success address: " + con.getURL());
 
-            System.out.println("Success address: "+con.getURL());
+            String key,ln;
+            BufferedReader br = new BufferedReader(new InputStreamReader((con.getInputStream())));
+            StringBuilder sb = new StringBuilder();
+            while ((ln = br.readLine()) != null) {
+                sb.append(ln);
+            }
+
+
+            X509EncodedKeySpec keySpec = new X509EncodedKeySpec(Base64.getDecoder().decode(sb.toString()));
+            KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+            pubKey = keyFactory.generatePublic(keySpec);
+
 
             String gf = con.getHeaderField("Godfather");
             if(gf != null){
@@ -62,13 +85,19 @@ public class UpperNode extends RemoteNode {
     }
 
 
+    public int readEncrypted(byte b[], int off, int len) throws IOException {
+        return feed.readEncrypted(b, off, len);
+    }
+
     public byte[] receive(int bytes) throws IOException{
 
         byte buf[]  = new byte[bytes];
         int missingBytes = bytes, n;
 
         do {
-            n = feed.read(buf,bytes-missingBytes,missingBytes);
+
+            n = feed.readDecrypted(buf,bytes-missingBytes,missingBytes,pubKey);
+            //System.out.println(n + " " + missingBytes);
             if(n == -1) {
                 if(missingBytes == bytes) return null;
                 byte reBuf[] = new byte[bytes - missingBytes];
@@ -81,4 +110,5 @@ public class UpperNode extends RemoteNode {
 
 
     }
+
 }

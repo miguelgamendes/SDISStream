@@ -36,5 +36,7 @@ public class LowerNode extends RemoteNode {
             outputStream.encryptAndWrite(data, 0, n);
         else
             outputStream.write(data, 0, n);
+        outputStream.flush();
     }
+
 }

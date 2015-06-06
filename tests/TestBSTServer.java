@@ -17,9 +17,12 @@ public class TestBSTServer {
             //server.send("Use it for a lot of things,.\n".getBytes());
             //server.send("things that use stream.\n".getBytes());
             //server.send("Tree Stream.\n".getBytes());
-            byte xx[] = new byte[1];
+            byte xx[] = new byte[4];
             xx[0] = (byte)i;
-            server.send(xx,1);
+            xx[1] = (byte)i;
+            xx[2] = (byte)i;
+            xx[3] = (byte)i;
+            server.send(xx,4);
             System.out.println(xx[0]);
             Thread.sleep(100);
         }

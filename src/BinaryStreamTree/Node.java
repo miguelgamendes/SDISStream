@@ -2,11 +2,13 @@ package BinaryStreamTree;
 
 import BinaryStreamTree.remote.LowerNode;
 import HttpSecure.HttpSecureServer;
-import HttpSecure.HttpURLSecureConnection;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 
 import java.io.IOException;
+import java.io.OutputStream;
+import java.security.PublicKey;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.locks.Condition;
@@ -20,6 +22,7 @@ public abstract class Node extends HttpSecureServer{
     volatile protected LowerNode olderSon = null;
     volatile protected LowerNode youngerSon = null;
     volatile protected boolean olderSonConfirmed, youngerSonConfirmed;
+    volatile protected PublicKey key;
 
     Node(int BS3PPort) throws IOException {
         super(BS3PPort);
@@ -82,16 +85,27 @@ public abstract class Node extends HttpSecureServer{
             try {Thread.sleep(10); } catch (InterruptedException e) { e.printStackTrace();}
         }
 
+        byte [] encKey = Base64.getEncoder().encode(key.getEncoded());
             if (olderSon == null) {
                 System.out.println("New child is OlderSon");
                 olderSon = new LowerNode(httpExchange.getRemoteAddress().getHostName(),
                         httpPort, socketPort);
-                httpExchange.sendResponseHeaders(200, "Sucess".length());
+
+                httpExchange.sendResponseHeaders(200, encKey.length);
+                OutputStream out = httpExchange.getResponseBody();
+                out.write(encKey);
+                out.close();
+
             } else if (youngerSon == null) {
+                System.out.println("New child is youngerSon");
                 youngerSon = new LowerNode(httpExchange.getRemoteAddress().getHostName(),
                         httpPort, socketPort);
-                System.out.println("New child is youngerSon");
-                httpExchange.sendResponseHeaders(200, "Sucess".length());
+
+                httpExchange.sendResponseHeaders(200, encKey.length);
+                OutputStream out = httpExchange.getResponseBody();
+                out.write(encKey);
+                out.close();
+
             } else {
                 String url = "http://" + olderSon.getAddress() + ":" + olderSon.getPort() + httpExchange.getRequestURI();
                 Headers headers = httpExchange.getResponseHeaders();

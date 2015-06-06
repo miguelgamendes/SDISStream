@@ -11,8 +11,12 @@ public class Encryptor {
     //private Key otherPublicKey;
     private PublicKey publicKey;
 
-    Encryptor(){
+    public Encryptor(){
 
+    }
+
+    public Encryptor(PublicKey key){
+            publicKey =key;
     }
 
     public void generateKeys(){
@@ -21,6 +25,7 @@ public class Encryptor {
             kpg.initialize(4096);
             this.keyPair = kpg.genKeyPair();
             this.publicKey = this.keyPair.getPublic();
+
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
@@ -34,11 +39,11 @@ public class Encryptor {
         this.publicKey = publicKey;
     }
 
-    byte[] authenticateData(byte[] data) {
+    public byte[] authenticateData(byte[] data,int size) {
         try {
             Cipher cipher = Cipher.getInstance("RSA");
             cipher.init(Cipher.ENCRYPT_MODE, this.keyPair.getPrivate());
-            return cipher.doFinal(data); // também pode ter um offset e tamanho
+            return cipher.doFinal(data,0,size); // também pode ter um offset e tamanho
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         } catch (NoSuchPaddingException e) {
