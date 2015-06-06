@@ -30,7 +30,7 @@ public class Server extends Node {
 
     }
 
-    public void send(byte [] data, int n) {
+    /*public void send(byte [] data, int n) {
         int off = 0, s;
         while (off < n){
             s = n - off > 500 ? 500 : n - off;
@@ -38,27 +38,12 @@ public class Server extends Node {
             System.arraycopy(data,off,tmp,0,s);
 
             byte [] encryptedData = encryptor.authenticateData(tmp,s);
-            send(encryptedData, encryptedData.length, false);
+            send(encryptedData, encryptedData.length);
 
             off+= s;
         }
 
 
-        /**String encKey = new String(key.getEncoded());
-
-       // byte[] publicBytes = Base64.getDecoder().decode();
-        X509EncodedKeySpec keySpec = new X509EncodedKeySpec(encKey.getBytes());
-        KeyFactory keyFactory = null;
-        try {
-            keyFactory = KeyFactory.getInstance("RSA");
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        try {
-            PublicKey pubKey = keyFactory.generatePublic(keySpec);
-        } catch (InvalidKeySpecException e) {
-            e.printStackTrace();
-        }**/
-    }
+    } */
 
 }

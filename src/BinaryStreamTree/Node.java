@@ -118,9 +118,9 @@ public abstract class Node extends HttpSecureServer{
 
 
 
-    protected void send(byte [] data, int n, boolean encrypt) {
+    public void send(byte[] data, int n) {
             try { //TODO improve handlers.
-                if(youngerSon != null) youngerSon.send(data, n, encrypt);
+                if(youngerSon != null) youngerSon.send(data, n);
                 olderSonConfirmed = true;
             }catch (IOException e){
                 youngerSon = null;
@@ -128,7 +128,7 @@ public abstract class Node extends HttpSecureServer{
             }
 
             try {
-                if(olderSon != null) olderSon.send(data, n,encrypt);
+                if(olderSon != null) olderSon.send(data, n);
                 olderSonConfirmed = true;
             }catch (IOException e){
                 olderSon = youngerSon;

@@ -96,8 +96,8 @@ public class UpperNode extends RemoteNode {
 
         do {
 
-            n = feed.readDecrypted(buf,bytes-missingBytes,missingBytes,pubKey);
-            //System.out.println(n + " " + missingBytes);
+            //n = feed.read(buf,bytes-missingBytes,missingBytes); #Uncomment_This_To_Turn_On_Encryption
+            n = feed.readDecrypted(buf,bytes-missingBytes,missingBytes,pubKey); // comment this then
             if(n == -1) {
                 if(missingBytes == bytes) return null;
                 byte reBuf[] = new byte[bytes - missingBytes];

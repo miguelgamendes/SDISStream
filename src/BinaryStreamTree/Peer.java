@@ -63,7 +63,6 @@ public class Peer extends Node implements Runnable {
      * parent' socket resend it to it's children and return the upper layer.
      */
     public byte [] receive(int bytes) throws AbortedConnectionException {
-        System.out.println("requested bytes" + bytes);
         byte [] data = new byte[0];
         try {
             data = parent.receive(bytes);
@@ -83,7 +82,7 @@ public class Peer extends Node implements Runnable {
         int n;
             try {
                 n = parent.readEncrypted(data,0,15000);
-                send(data,n,false);
+                send(data,n);
             } catch (NullPointerException e) {
                 // this should append because of concurrency.
             } catch (IOException e) {
@@ -93,6 +92,7 @@ public class Peer extends Node implements Runnable {
                     e1.printStackTrace();
                 }
             }
+
 
         }
     }

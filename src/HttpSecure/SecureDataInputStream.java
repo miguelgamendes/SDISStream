@@ -20,7 +20,7 @@ public class SecureDataInputStream extends DataInputStream {
     byte decryptedWaste[] = new byte[0];
     byte encryptedWaste[] = new byte[0];
     volatile boolean isClosed = false;
-    protected ConcurrentLinkedQueue<byte[]> queue = new ConcurrentLinkedQueue<byte[]>();
+    volatile protected ConcurrentLinkedQueue<byte[]> queue = new ConcurrentLinkedQueue<byte[]>();
 
     public SecureDataInputStream(InputStream in) {
         super(in);
@@ -61,7 +61,7 @@ public class SecureDataInputStream extends DataInputStream {
             if(queue.size() == 0) break;
             temp = queue.poll();
             //decrypt
-            temp = new Encryptor(pubKey).validateData(temp);
+            //temp = new Encryptor(pubKey).validateData(temp); #Uncomment_This_To_Turn_On_Encryption
 
             r = len-n < temp.length ? len-n : temp.length;
             System.arraycopy(temp,0,b,off+n,r);
