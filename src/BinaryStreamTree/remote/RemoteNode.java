@@ -1,7 +1,6 @@
 package BinaryStreamTree.remote;
 
 import HttpSecure.HttpSecureServer;
-import HttpSecure.HttpURLSecureConnection;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
